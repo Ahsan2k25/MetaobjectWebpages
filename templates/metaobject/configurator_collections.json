@@ -8,6 +8,14 @@
  * ------------------------------------------------------------
  */
 {
-  "sections": {},
-  "order": []
+  "sections": {
+    "configurator_landing_wWxyWH": {
+      "type": "configurator-landing",
+      "name": "Configurator Landing",
+      "settings": {}
+    }
+  },
+  "order": [
+    "configurator_landing_wWxyWH"
+  ]
 }
