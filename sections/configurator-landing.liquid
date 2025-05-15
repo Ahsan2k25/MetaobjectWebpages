@@ -1,133 +1,64 @@
+{% assign current_metaobject = metaobject %}
+
+<section class="dealer-listing">
+  <div class="container">
+    <div class="dealer-breadcrumbs font-calling-code">
+      <a href="/pages/configurators" class="font-calling-code">SHOP ALL</a> / <span class="font-calling-code">ARTAFEX 4 CONFIGURATORS</span>
+    </div>
+
+    <div class="dealer-top-header">
+      <h2 class="dealer-top-heading font-neue-roman">{{ current_metaobject.collection_name }} Configurators</h2>
+      <div class="collections-navigation" id="collections-navigation">
+        <ul></ul>
+      </div>
+    </div>
+
+    <!-- Pass the raw JSON string as a data attribute -->
+    <div id="collection-data" data-refs='{{ current_metaobject.configurator_nested_collection }}' style="display:none;"></div>
+
+    <div class="nested-collections" id="nested-collections">
+      <div class="dealer-collection-box"></div>
+    </div>
+  </div>
+</section>
 <div class="configurator-landing">
-  {% assign current_metaobject = metaobject %}
+  
   
   <div class="configurator-collection">
-    <h2>{{ current_metaobject.collection_name }}</h2>
+    {% comment %} <h2>{{ current_metaobject.collection_name }}</h2>
+    <div class="collections-navigation" id="collections-navigation">
+      <ul>
+        <li></li>
+      </ul>
+    </div> {% endcomment %}
     
-    {% comment %} {% if current_metaobject.collection_image %}
-      <div class="collection-image">
-        <img src="{{ current_metaobject.collection_image | image_url }}" alt="{{ current_metaobject.collection_name }}">
-      </div>
-    {% endif %} {% endcomment %}
     
-    {% comment %} {% if current_metaobject.configure_button_text %}
-      <div class="collection-button">
-        <a href="{{ current_metaobject.configure_button_url }}" class="btn">
-          {{ current_metaobject.configure_button_text }}
-        </a>
-      </div>
-    {% endif %} {% endcomment %}
     
-    <div class="nested-collections" id="nested-collections">
-      <div class="loading">Loading nested collections...</div>
-    </div>
+    
   </div>
 </div>
 
-<style>
-  .configurator-landing {
-    padding: 2rem 0;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  
-  .btn {
-    display: inline-block;
-    padding: 0.75rem 1.5rem;
-    background-color: #4a4a4a;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-  }
-  
-  .btn:hover {
-    background-color: #2a2a2a;
-  }
-  
-  .nested-collections {
-    margin-top: 2rem;
-  }
-  
-  .nested-collection {
-    margin-bottom: 3rem;
-    padding: 1.5rem;
-    border: 1px solid #e0e0e0;
-    border-radius: 8px;
-  }
-  
-  .collection-subtitle {
-    color: #666;
-    margin-top: 0.25rem;
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
-  }
-  
-  .product-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1.5rem;
-    margin-top: 1rem;
-  }
-  
-  .product-card {
-    border: 1px solid #e5e5e5;
-    border-radius: 8px;
-    padding: 1.5rem;
-    transition: box-shadow 0.3s ease;
-    background-color: white;
-  }
-  
-  .product-card:hover {
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  }
-  
-  .product-image {
-    margin-bottom: 1rem;
-  }
-  
-  .product-image img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 4px;
-  }
-  
-  .product-title {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
-  }
-  
-  .product-button {
-    margin-top: 1rem;
-  }
-  
-  .loading {
-    padding: 2rem;
-    text-align: center;
-    background-color: #f8f8f8;
-    border-radius: 8px;
-  }
-  
-  .error {
-    padding: 1rem;
-    margin: 1rem 0;
-    background-color: #fff0f0;
-    border: 1px solid #ffcccc;
-    border-radius: 4px;
-    color: #cc0000;
-  }
-</style>
-
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Use the exact GIDs we found from the debug output
-    const nestedCollectionIds = [
-      "gid://shopify/Metaobject/216643928338",
-      "gid://shopify/Metaobject/216643961106"
-    ];
-    
     const nestedContainer = document.getElementById('nested-collections');
+    const navContainer = document.getElementById('collections-navigation').querySelector('ul');
+    
+    // Get the raw JSON string from the data attribute
+    const dataElement = document.getElementById('collection-data');
+    const rawJson = dataElement.getAttribute('data-refs');
+    console.log('Raw JSON from data attribute:', rawJson);
+    
+    // Parse the JSON string to get the array of GIDs
+    let nestedCollectionIds;
+    try {
+      nestedCollectionIds = JSON.parse(rawJson);
+      console.log('Parsed collection IDs:', nestedCollectionIds);
+    } catch (error) {
+      console.error('Error parsing collection references:', error);
+      nestedContainer.innerHTML = '<div>Error parsing collection references</div>';
+      navContainer.innerHTML = '<li>Error loading collections</li>';
+      return;
+    }
     
     // Storefront API Configuration
     const storefrontApiToken = 'c728f2cb977d44d8991f690f5ef1d3f3';
@@ -285,19 +216,70 @@
     // Main function to load data
     async function loadNestedCollections() {
       try {
-        // Show loading state
-        nestedContainer.innerHTML = '<div class="loading">Loading collections...</div>';
-        
         // Fetch the nested collections
         const nestedCollections = await fetchNestedCollections();
         
         if (!nestedCollections || nestedCollections.length === 0) {
           nestedContainer.innerHTML = '<p>No nested collections found.</p>';
+          navContainer.innerHTML = '<li>No collections available</li>';
           return;
         }
         
         console.log('Fetched nested collections:', nestedCollections);
         
+        // Group collections by name to avoid duplicates in navigation
+        const collectionGroups = {};
+        const uniqueNames = new Set();
+        
+        // Process each collection and organize them by name
+        nestedCollections.forEach(collection => {
+          const fields = processMetaobjectFields(collection);
+          const collectionName = fields.collection_name || collection.handle || 'Unnamed Collection';
+          
+          // Add to unique names set
+          uniqueNames.add(collectionName);
+          
+          // Add to group
+          if (!collectionGroups[collectionName]) {
+            collectionGroups[collectionName] = [];
+          }
+          collectionGroups[collectionName].push(collection);
+        });
+        
+        console.log('Collection groups:', collectionGroups);
+        
+        // Build navigation with unique names
+        let navHtml = '';
+        let activeSet = false;
+        
+        // Convert Set to Array and sort alphabetically
+        const sortedUniqueNames = Array.from(uniqueNames).sort();
+        
+        sortedUniqueNames.forEach(name => {
+          const collections = collectionGroups[name];
+          if (!collections || collections.length === 0) return;
+          
+          // Use the first collection in each group for the navigation link
+          const firstCollection = collections[0];
+          
+          // Set active class on first nav item only
+          const isActive = !activeSet;
+          if (isActive) activeSet = true;
+          
+          navHtml += `
+            <li>
+              <a href="#collection-${firstCollection.handle}" 
+                 data-collection-name="${name}"
+                 class="${isActive ? 'active' : ''}">
+                ${name}
+              </a>
+            </li>
+          `;
+        });
+        
+        navContainer.innerHTML = navHtml;
+        
+        // Build collections content
         let collectionsHtml = '';
         
         // Process each nested collection
@@ -307,10 +289,8 @@
           
           // Start building the HTML for this collection
           let collectionHtml = `
-            <div class="nested-collection">
-              <h3>${fields.collection_name || 'Nested Collection'}</h3>
-              ${fields.collection_display_name ? 
-                `<div class="collection-subtitle">${fields.collection_display_name}</div>` : ''}
+            <div id="collection-${nestedCollection.handle}" class="dealer-collection-box nested-collection" data-name="${fields.collection_name || 'Unnamed Collection'}">
+              <h2>${fields.collection_display_name || 'Nested Collection'}</h2>
           `;
           
           // Extract product card IDs
@@ -322,7 +302,7 @@
           console.log('Fetched product cards:', productCards);
           
           // Add product cards section
-          collectionHtml += '<div class="product-cards">';
+          collectionHtml += '<div class="dealer-collections-listing-carousel">';
           
           if (productCards && productCards.length > 0) {
             // Process each product card
@@ -331,41 +311,27 @@
               console.log('Product card fields:', cardFields);
               
               collectionHtml += `
-                <div class="product-card">
+                <div class="dealer-collections-list-item">
                   <div class="product-image">
-                    <img src="${cardFields.product_image ? cardFields.product_image : 'https://via.placeholder.com/300x200'}" 
-                         alt="${cardFields.product_name || 'Product'}">
+                    <img src="${getShopifyImageUrl(cardFields.product_image)}" alt="${cardFields.product_name || 'Product'}" width="226" height="305">
                   </div>
-                  <h4 class="product-title">${cardFields.product_name || 'Product'}</h4>
-                  ${cardFields.configure_button_text ? 
-                    `<div class="product-button">
-                      <a href="${cardFields.configure_button_url || '#'}" class="btn">
-                        ${cardFields.configure_button_text}
-                      </a>
-                    </div>` : ''}
+                  <div class="dealer-collections-list-content">
+                    <h3 class="product-title font-neue-roman">${cardFields.product_name || 'Product'}</h3>
+                    ${cardFields.configure_button_text ? 
+                      `<div class="product-button">
+                        <a href="${cardFields.configure_button_url || '#'}" class="btn font-neue-roman">
+                          ${cardFields.configure_button_text}
+                        </a>
+                      </div>` : ''}
+                    </div>
                 </div>
               `;
             }
           } else {
             // If no product cards were found, show placeholders
             collectionHtml += `
-              <div class="product-card">
-                <div class="product-image">
-                  <img src="https://via.placeholder.com/300x200" alt="Product">
-                </div>
-                <h4 class="product-title">Product from ${nestedCollection.handle || 'Collection'}</h4>
-                <div class="product-button">
-                  <a href="#" class="btn">Configure</a>
-                </div>
-              </div>
-              <div class="product-card">
-                <div class="product-image">
-                  <img src="https://via.placeholder.com/300x200" alt="Product">
-                </div>
-                <h4 class="product-title">Another Product</h4>
-                <div class="product-button">
-                  <a href="#" class="btn">Configure</a>
-                </div>
+              <div class="dealer-collections-list-item">
+               No product cards found!
               </div>
             `;
           }
@@ -375,64 +341,63 @@
         }
         
         nestedContainer.innerHTML = collectionsHtml;
+        
+        // Add click event listeners to navigate between collections
+        const navLinks = navContainer.querySelectorAll('a');
+        navLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove active class from all links
+            navLinks.forEach(l => l.classList.remove('active'));
+            
+            // Add active class to clicked link
+            this.classList.add('active');
+            
+            // Get the collection name for this navigation item
+            const collectionName = this.getAttribute('data-collection-name');
+            
+            // Find the first collection with this name
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+              targetElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+              });
+            }
+          });
+        });
       } catch (error) {
         console.error('Error:', error);
         
-        // Show error and fall back to the hardcoded approach
-        nestedContainer.innerHTML = `
-          <div class="error">
-            <p>Error loading collections: ${error.message}</p>
-          </div>
-          
-          <div class="nested-collection">
-            <h3>Nested Collection 1</h3>
-            <div class="product-cards">
-              <div class="product-card">
-                <div class="product-image">
-                  <img src="https://via.placeholder.com/300x200" alt="Product 1">
-                </div>
-                <h4 class="product-title">Product 1</h4>
-                <div class="product-button">
-                  <a href="#" class="btn">Configure</a>
-                </div>
-              </div>
-              <div class="product-card">
-                <div class="product-image">
-                  <img src="https://via.placeholder.com/300x200" alt="Product 2">
-                </div>
-                <h4 class="product-title">Product 2</h4>
-                <div class="product-button">
-                  <a href="#" class="btn">Configure</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <div class="nested-collection">
-            <h3>Nested Collection 2</h3>
-            <div class="product-cards">
-              <div class="product-card">
-                <div class="product-image">
-                  <img src="https://via.placeholder.com/300x200" alt="Product 3">
-                </div>
-                <h4 class="product-title">Product 3</h4>
-                <div class="product-button">
-                  <a href="#" class="btn">Configure</a>
-                </div>
-              </div>
-              <div class="product-card">
-                <div class="product-image">
-                  <img src="https://via.placeholder.com/300x200" alt="Product 4">
-                </div>
-                <h4 class="product-title">Product 4</h4>
-                <div class="product-button">
-                  <a href="#" class="btn">Configure</a>
-                </div>
-              </div>
-            </div>
-          </div>
-        `;
+        // Show error and fall back to a simple error message
+        navContainer.innerHTML = '<li>Error loading collections</li>';
+        nestedContainer.innerHTML = `<div>Error loading collections: ${error.message}</div>`;
       }
+    }
+
+    // Modify your script by adding this function before loadNestedCollections
+    function getShopifyImageUrl(imageGid) {
+      if (!imageGid || typeof imageGid !== 'string') {
+        return 'https://via.placeholder.com/300x200';
+      }
+      
+      // Check if it's already a URL
+      if (imageGid.startsWith('http')) {
+        return imageGid;
+      }
+      
+      // Handle GID format for Shopify assets
+      if (imageGid.startsWith('gid://shopify/MediaImage/')) {
+        // Use the CDN image URL format
+        const imageId = imageGid.split('/').pop();
+        return `/api/product_images/${imageId}`;
+      }
+      
+      // Fallback to placeholder
+      return 'https://via.placeholder.com/300x200';
     }
     
     // Start loading
