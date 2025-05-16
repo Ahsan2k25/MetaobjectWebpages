@@ -378,27 +378,16 @@
       }
     }
 
-    // Modify your script by adding this function before loadNestedCollections
-    function getShopifyImageUrl(imageGid) {
-      if (!imageGid || typeof imageGid !== 'string') {
-        return 'https://via.placeholder.com/300x200';
-      }
-      
-      // Check if it's already a URL
-      if (imageGid.startsWith('http')) {
-        return imageGid;
-      }
-      
-      // Handle GID format for Shopify assets
-      if (imageGid.startsWith('gid://shopify/MediaImage/')) {
-        // Use the CDN image URL format
-        const imageId = imageGid.split('/').pop();
-        return `/api/product_images/${imageId}`;
-      }
-      
-      // Fallback to placeholder
+    function getShopifyImageUrl(imageUrl) {
+    if (!imageUrl || typeof imageUrl !== 'string') {
       return 'https://via.placeholder.com/300x200';
     }
+
+    console.log('Image URL: '+imageUrl);
+
+    return imageUrl.startsWith('cdn') ? imageUrl : 'https://via.placeholder.com/300x200';
+  }
+
     
     // Start loading
     loadNestedCollections();
@@ -407,11 +396,11 @@
 
 {% schema %}
   {
-    "name": "Configurator Landing",
+    "name": "Configurator Listing",
     "settings": [],
     "presets": [
       {
-        "name": "Configurator Landing"
+        "name": "Configurator Listing"
       }
     ]
   }
