@@ -9,13 +9,13 @@
  */
 {
   "sections": {
-    "configurator_landing_wWxyWH": {
-      "type": "configurator-landing",
-      "name": "Configurator Landing",
+    "configurator_listing_3jPazE": {
+      "type": "configurator-listing",
+      "name": "Configurator Listing",
       "settings": {}
     }
   },
   "order": [
-    "configurator_landing_wWxyWH"
+    "configurator_listing_3jPazE"
   ]
 }
