@@ -1,3 +1,6 @@
+{% comment %} Stylesheet {% endcomment %}
+<link href="{{ 'page.configurator-listing.css' | asset_url }}" rel="stylesheet">
+
 {% assign current_metaobject = metaobject %}
 
 <section class="dealer-listing">
@@ -9,7 +12,7 @@
     <div class="dealer-top-header">
       <h2 class="dealer-top-heading font-neue-roman">{{ current_metaobject.collection_name }} Configurators</h2>
       <div class="collections-navigation" id="collections-navigation">
-        <ul></ul>
+        <ul class="dealer-top-navigation"></ul>
       </div>
     </div>
 
@@ -21,27 +24,109 @@
     </div>
   </div>
 </section>
-<div class="configurator-landing">
-  
-  
-  <div class="configurator-collection">
-    {% comment %} <h2>{{ current_metaobject.collection_name }}</h2>
-    <div class="collections-navigation" id="collections-navigation">
-      <ul>
-        <li></li>
-      </ul>
-    </div> {% endcomment %}
-    
-    
-    
-    
-  </div>
-</div>
 
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     const nestedContainer = document.getElementById('nested-collections');
     const navContainer = document.getElementById('collections-navigation').querySelector('ul');
+    
+    // Auto-updating image URL mapping
+    // Initial mapping with the one we know works
+    const imageMap = {
+      "43536441049362": "https://cdn.shopify.com/s/files/1/0939/5686/6322/files/Homepage_01_Artafex2_Series_C_1.jpg"
+    };
+    
+    // Store which URL patterns work for which images
+    const successfulPatterns = {};
+    
+    // Define possible URL patterns to try (in order of preference)
+    const urlPatterns = [
+      // Try with standard file name formats
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/files/${id}.jpg`,
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/files/${id}.png`,
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/files/${id}.jpeg`,
+      
+      // Try with image_ prefix
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/files/image_${id}.jpg`,
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/files/image_${id}.png`,
+      
+      // Try with product_ prefix
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/files/product_${id}.jpg`,
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/files/product_${id}.png`,
+      
+      // Try other common prefixes
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/files/shopify_${id}.jpg`,
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/files/media_${id}.jpg`,
+      
+      // Try with catalog pattern
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/t/1/assets/image_${id}.jpg`,
+      (id) => `https://cdn.shopify.com/s/files/1/0939/5686/6322/t/1/assets/${id}.jpg`
+    ];
+    
+    // Function to dynamically check which image URL works
+    function tryImageURLs(imageId, imgElement) {
+      if (!imageId) return;
+      
+      // If we already know this image URL, use it
+      if (imageMap[imageId]) {
+        imgElement.src = imageMap[imageId];
+        return;
+      }
+      
+      // If we've already found a working pattern for this ID
+      if (successfulPatterns[imageId]) {
+        imgElement.src = successfulPatterns[imageId];
+        return;
+      }
+      
+      // Track which pattern is being tried for debugging
+      let patternIndex = 0;
+      
+      // Try each URL pattern until one works
+      function tryNextPattern() {
+        if (patternIndex >= urlPatterns.length) {
+          // If we've tried all patterns and none worked, use placeholder
+          console.warn(`No working URL found for image ID: ${imageId}`);
+          imgElement.src = 'https://via.placeholder.com/300x200';
+          return;
+        }
+        
+        // Get the next pattern and create a URL
+        const pattern = urlPatterns[patternIndex];
+        const url = pattern(imageId);
+        
+        console.log(`Trying pattern ${patternIndex} for image ${imageId}: ${url}`);
+        
+        // Create a new image to test if the URL works
+        const testImage = new Image();
+        
+        // Set up handlers
+        testImage.onload = function() {
+          // This URL works! Use it and save it
+          imgElement.src = url;
+          imageMap[imageId] = url;
+          successfulPatterns[imageId] = url;
+          console.log(`✅ Found working URL for ${imageId}: ${url}`);
+          
+          // Log the complete imageMap periodically
+          if (Object.keys(imageMap).length % 5 === 0) {
+            console.log('Current imageMap:', JSON.stringify(imageMap, null, 2));
+          }
+        };
+        
+        testImage.onerror = function() {
+          // This pattern didn't work, try the next one
+          patternIndex++;
+          tryNextPattern();
+        };
+        
+        // Start loading the test image
+        testImage.src = url;
+      }
+      
+      // Start trying patterns
+      tryNextPattern();
+    }
     
     // Get the raw JSON string from the data attribute
     const dataElement = document.getElementById('collection-data');
@@ -111,108 +196,121 @@
       }
     }
     
-    // Function to fetch product cards by their IDs
     async function fetchProductCards(productCardIds) {
       if (!productCardIds || productCardIds.length === 0) {
         return [];
       }
-      
-      // Clean up the IDs - they're likely in a JSON string format
-      const cleanIds = productCardIds.map(id => {
-        if (typeof id === 'string') {
-          // If it's already a GID, use it as is
-          if (id.startsWith('gid://')) {
-            return id;
-          }
-          // Otherwise, it might be a numeric ID that needs to be converted to a GID
-          return `gid://shopify/Metaobject/${id}`;
-        }
-        return null;
-      }).filter(Boolean);
-      
-      if (cleanIds.length === 0) {
-        return [];
-      }
-      
-      // Query to get product cards
-      const query = `
-        {
-          nodes(ids: ${JSON.stringify(cleanIds)}) {
-            ... on Metaobject {
-              id
-              handle
-              type
-              fields {
-                key
-                value
-              }
+
+  // Ensure all IDs are valid Shopify GIDs
+  const cleanIds = productCardIds.map(id => {
+    if (typeof id === 'string') {
+      return id.startsWith('gid://') ? id : `gid://shopify/Metaobject/${id}`;
+    }
+    return null;
+  }).filter(Boolean);
+
+  if (cleanIds.length === 0) {
+    return [];
+  }
+
+  // 🔥 Fix: GraphQL-safe formatting of ID array
+  const gqlIds = cleanIds.map(id => `"${id}"`).join(', ');
+  console.log('gQL ids: '+gqlIds;)
+
+  // Update your query to correctly access file references
+  const query = `
+{
+  nodes(ids: [${gqlIds}]) {
+    ... on Metaobject {
+      id
+      handle
+      type
+      fields {
+        key
+        value
+        reference {
+          ... on MediaImage {
+            id
+            image {
+              url
+              altText
+              width
+              height
             }
           }
         }
-      `;
-      
-      try {
-        const response = await fetch(storefrontApiUrl, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-Shopify-Storefront-Access-Token': storefrontApiToken
-          },
-          body: JSON.stringify({ query })
-        });
-        
-        if (!response.ok) {
-          throw new Error(`API response: ${response.status} ${response.statusText}`);
-        }
-        
-        const data = await response.json();
-        
-        if (data.errors) {
-          throw new Error(data.errors.map(e => e.message).join(', '));
-        }
-        
-        return data.data?.nodes || [];
-      } catch (error) {
-        console.error('Error fetching product cards:', error);
-        return [];
       }
     }
-    
-    // Function to process metaobject fields
-    function processMetaobjectFields(metaobject) {
-      if (!metaobject || !metaobject.fields) {
-        return {};
-      }
-      
-      const fields = {};
-      
-      metaobject.fields.forEach(field => {
-        if (field.key) {
-          fields[field.key] = field.value;
-        }
-      });
-      
-      return fields;
+  }
+}
+
+`;
+
+  try {
+    const response = await fetch(storefrontApiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-Shopify-Storefront-Access-Token': storefrontApiToken
+      },
+      body: JSON.stringify({ query })
+    });
+
+    if (!response.ok) {
+      throw new Error(`API response: ${response.status} ${response.statusText}`);
     }
-    
-    // Extract product card IDs from a nested collection
-    function extractProductCardIds(nestedCollection) {
-      const fields = processMetaobjectFields(nestedCollection);
-      
-      if (!fields.product_cards) {
-        return [];
-      }
-      
-      // Try to parse the product_cards value as JSON
-      try {
-        const productCards = JSON.parse(fields.product_cards);
-        return Array.isArray(productCards) ? productCards : [];
-      } catch (e) {
-        console.error('Error parsing product cards:', e);
-        return [];
-      }
+
+    const data = await response.json();
+
+    if (data.errors) {
+      throw new Error(data.errors.map(e => e.message).join(', '));
     }
-    
+
+    return data.data?.nodes || [];
+  } catch (error) {
+    console.error('Error fetching product cards:', error);
+    return [];
+  }
+}
+
+  function processMetaobjectFields(metaobject) {
+  const fields = {};
+
+  metaobject.fields.forEach(field => {
+    fields[field.key] = field.value;
+
+    if (field.key === 'product_card_image' && field.reference?.image?.url) {
+      fields['product_card_image_url'] = field.reference.image.url;
+    }
+  });
+
+  return fields;
+}
+
+
+
+
+
+
+
+
+
+    function extractProductCardIds(nestedCollection, key = 'product_cards') {
+  const fields = processMetaobjectFields(nestedCollection);
+  console.log('Product card IDs:', fields);
+  
+  if (!fields[key]) return [];
+
+  try {
+    const parsed = JSON.parse(fields[key]);
+    if (Array.isArray(parsed)) return parsed;
+  } catch {
+    return fields[key].split(',').map(id => id.trim()).filter(Boolean);
+  }
+
+  return [];
+}
+
     // Main function to load data
     async function loadNestedCollections() {
       try {
@@ -291,6 +389,7 @@
           let collectionHtml = `
             <div id="collection-${nestedCollection.handle}" class="dealer-collection-box nested-collection" data-name="${fields.collection_name || 'Unnamed Collection'}">
               <h2>${fields.collection_display_name || 'Nested Collection'}</h2>
+              <div class="dealer-collections-listing-carousel">
           `;
           
           // Extract product card IDs
@@ -301,46 +400,95 @@
           const productCards = await fetchProductCards(productCardIds);
           console.log('Fetched product cards:', productCards);
           
-          // Add product cards section
-          collectionHtml += '<div class="dealer-collections-listing-carousel">';
-          
           if (productCards && productCards.length > 0) {
             // Process each product card
             for (const productCard of productCards) {
               const cardFields = processMetaobjectFields(productCard);
               console.log('Product card fields:', cardFields);
+              console.log("Resolved image URL:", cardFields.product_card_image_url);
+
               
-              collectionHtml += `
-                <div class="dealer-collections-list-item">
-                  <div class="product-image">
-                    <img src="${getShopifyImageUrl(cardFields.product_image)}" alt="${cardFields.product_name || 'Product'}" width="226" height="305">
-                  </div>
-                  <div class="dealer-collections-list-content">
-                    <h3 class="product-title font-neue-roman">${cardFields.product_name || 'Product'}</h3>
-                    ${cardFields.configure_button_text ? 
-                      `<div class="product-button">
-                        <a href="${cardFields.configure_button_url || '#'}" class="btn font-neue-roman">
-                          ${cardFields.configure_button_text}
-                        </a>
-                      </div>` : ''}
-                    </div>
-                </div>
-              `;
+              const imageUrl = cardFields.product_card_image_url || 'https://via.placeholder.com/300x200';
+
+
+
+console.log('🖼 Image URL resolved for card:', imageUrl);
+
+             collectionHtml += `
+  <div class="dealer-collections-list-item">
+    <div class="product-image">
+      <img src="${imageUrl}" 
+           alt="${cardFields.product_name || 'Product'}" 
+           width="226" height="305">
+    </div>
+    <div class="dealer-collections-list-content">
+      <h3 class="product-title font-neue-roman">${cardFields.product_name || 'Product'}</h3>
+      ${cardFields.configure_button_text ? 
+        `<div class="product-button">
+          <a href="${cardFields.configure_button_url || '#'}" class="btn font-neue-roman">
+            ${cardFields.configure_button_text}
+          </a>
+        </div>` : ''}
+    </div>
+  </div>
+`;
+
             }
           } else {
-            // If no product cards were found, show placeholders
+            // If no product cards were found, show a message
             collectionHtml += `
               <div class="dealer-collections-list-item">
-               No product cards found!
+                No product cards found!
               </div>
             `;
           }
           
+          // Close the HTML tags
           collectionHtml += '</div></div>';
           collectionsHtml += collectionHtml;
         }
         
         nestedContainer.innerHTML = collectionsHtml;
+        
+        // Now try to load all the images with the dynamic URL finder
+        setTimeout(() => {
+          // Find all product images that need to be loaded
+          const images = document.querySelectorAll('.product-image img');
+          
+          images.forEach(img => {
+            const imageId = img.getAttribute('data-image-id');
+            if (imageId) {
+              tryImageURLs(imageId, img);
+            }
+          });
+          
+          // After all images have been processed, log the final imageMap
+          setTimeout(() => {
+            console.log('========== FINAL IMAGE MAP ==========');
+            console.log(JSON.stringify(imageMap, null, 2));
+            console.log('Copy this imageMap into your code to pre-load all images');
+            console.log('=====================================');
+            
+            // Count successful vs. failed images
+            const successfulImages = document.querySelectorAll('.product-image img:not([src="https://via.placeholder.com/300x200"])');
+            const failedImages = document.querySelectorAll('.product-image img[src="https://via.placeholder.com/300x200"]');
+            
+            console.log(`${successfulImages.length} images loaded successfully`);
+            
+            if (failedImages.length > 0) {
+              console.warn(`${failedImages.length} images failed to load`);
+              
+              // Log the image IDs that failed
+              const failedIds = Array.from(failedImages)
+                .map(img => img.getAttribute('data-image-id'))
+                .filter(Boolean);
+              
+              if (failedIds.length > 0) {
+                console.warn('Image IDs that failed to load:', failedIds);
+              }
+            }
+          }, 5000); // Give images 5 seconds to load
+        }, 1000); // Wait 1 second after rendering before trying to load images
         
         // Add click event listeners to navigate between collections
         const navLinks = navContainer.querySelectorAll('a');
@@ -377,17 +525,6 @@
         nestedContainer.innerHTML = `<div>Error loading collections: ${error.message}</div>`;
       }
     }
-
-    function getShopifyImageUrl(imageUrl) {
-    if (!imageUrl || typeof imageUrl !== 'string') {
-      return 'https://via.placeholder.com/300x200';
-    }
-
-    console.log('Image URL: '+imageUrl);
-
-    return imageUrl.startsWith('cdn') ? imageUrl : 'https://via.placeholder.com/300x200';
-  }
-
     
     // Start loading
     loadNestedCollections();
