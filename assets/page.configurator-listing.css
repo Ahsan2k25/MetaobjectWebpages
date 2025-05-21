@@ -27,6 +27,7 @@ html {
 
 .dealer-breadcrumbs{
     margin: 4px 0px 10px;
+    text-transform: uppercase;
 }
 
 .dealer-top-header {
@@ -97,6 +98,7 @@ ul.dealer-top-navigation li a.active{
     display: flex;
     align-items: center;
     gap: 0px 8px;
+    text-decoration: none;
 }
 
 .dealer-collections-listing-carousel {
@@ -116,6 +118,11 @@ ul.dealer-top-navigation li a.active{
 /*
 ** Responsive
 */
+@media screen and (max-width: 1300px) {
+  .container {
+    padding: 0 20px;
+  }
+}
 
 @media (max-width: 991px){
     .dealer-breadcrumbs a, 
@@ -137,6 +144,7 @@ ul.dealer-top-navigation li a.active{
         margin-top: 2px;
         padding-bottom: 0;
         gap: 0px 32px;
+        flex-wrap: wrap;
     }
     .dealer-top-header{
         padding-bottom: 22px;
