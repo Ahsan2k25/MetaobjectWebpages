@@ -1,31 +1,20 @@
-{% assign configurator = shop.metaobjects.configurator_collections['recessed'] %}
+
+
+
+
 
 
 
 {% schema %}
-  {
-    "name": "Configurator",
-    "settings": [],
-    "blocks": [
-      {
-        "type": "config_block",
-        "name": "Configurator Collection",
-        "settings": [
-          {
-            "type": "metaobject",
-            "id": "config_collections",
-            "label": "Choose a Configurator",
-            "metaobject_type": "configurator"
-          }
-        ]
-      }
-    ],
-    "max_blocks": 100,
-    "presets": [
-      {
-        "name": "Configurator"
-      }
-    ]
-  }
+{
+  "name": "Configurator Section",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Configurator Section"
+    }
+  ]
+}
 {% endschema %}
+
 
