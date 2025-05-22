@@ -11,13 +11,20 @@
   "sections": {
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "configurator_carousel_Ujnabr": {
+      "type": "configurator-carousel",
+      "name": "Configurator Carousel",
+      "settings": {}
     }
   },
   "order": [
-    "main"
+    "main",
+    "configurator_carousel_Ujnabr"
   ]
 }
