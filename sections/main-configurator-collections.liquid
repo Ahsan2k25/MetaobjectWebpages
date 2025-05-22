@@ -1,29 +1,5 @@
 {% assign configurator = shop.metaobjects.configurator_collections['recessed'] %}
 
-{% if configurator %}
-  <h2>{{ configurator.collection_name.value }}</h2>
-{% else %}
-  <p>Metaobject not found or unpublished</p>
-{% endif %}
-{% comment %} {% for card in product_cards %}
-{% assign configurator = all_configurators['summer-collection'] %}
-
-{% if all_configurators %}
-  <h2>{{ configurator.collection_name.value }}</h2>
-  <p>{{ configurator.description.value }}</p>
-
-  {% assign nested_collections = configurator.nested_collections.value %}
-  {% for nested in nested_collections %}
-    <h3>{{ nested.collection_display_name.value }}</h3>
-    {% assign product_cards = nested.conf_product_cards.value %}
-    {% for card in product_cards %}
-      <div>
-        <img src="{{ card.product_card_image.value | image_url: width: 226 }}" alt="{{ card.product_name.value }}">
-        <p>{{ card.product_name.value }}</p>
-      </div>
-    {% endfor %}
-  {% endfor %}
-{% endif %} {% endcomment %}
 
 
 {% schema %}
