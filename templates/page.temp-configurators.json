@@ -30,10 +30,22 @@
             "discover_button_text": "Discover",
             "discover_button_text_url": "#"
           }
+        },
+        "image_block_PMVUNQ": {
+          "type": "image_block",
+          "settings": {
+            "animated_box_image": "shopify://shop_images/customer-carousel-img2.webp",
+            "animated_box_tag": "Limited Time Offer",
+            "animated_box_heading": "Discover our",
+            "animated_box_heading_italic": "TuneUp offer",
+            "discover_button_text": "Discover",
+            "discover_button_text_url": "#"
+          }
         }
       },
       "block_order": [
-        "image_block_KVz6VG"
+        "image_block_KVz6VG",
+        "image_block_PMVUNQ"
       ],
       "name": "Configurator Carousel",
       "settings": {
