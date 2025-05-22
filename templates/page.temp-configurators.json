@@ -19,6 +19,22 @@
     },
     "configurator_carousel_Ujnabr": {
       "type": "configurator-carousel",
+      "blocks": {
+        "image_block_KVz6VG": {
+          "type": "image_block",
+          "settings": {
+            "animated_box_image": "shopify://shop_images/customer-carousel-img1.webp",
+            "animated_box_tag": "Don’t Miss",
+            "animated_box_heading": "Retrofit",
+            "animated_box_heading_italic": "sample case",
+            "discover_button_text": "Discover",
+            "discover_button_text_url": "#"
+          }
+        }
+      },
+      "block_order": [
+        "image_block_KVz6VG"
+      ],
       "name": "Configurator Carousel",
       "settings": {
         "quick_links_heading": "Quick Links"
