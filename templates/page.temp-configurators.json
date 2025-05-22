@@ -54,6 +54,31 @@
     },
     "main_configurator_collections_VX7rDC": {
       "type": "main-configurator-collections",
+      "blocks": {
+        "config_block_cmK9YT": {
+          "type": "config_block",
+          "settings": {
+            "config_collections": "recessed"
+          }
+        },
+        "config_block_M3cVX6": {
+          "type": "config_block",
+          "settings": {
+            "config_collections": "surface"
+          }
+        },
+        "config_block_M6A9gh": {
+          "type": "config_block",
+          "settings": {
+            "config_collections": "linear"
+          }
+        }
+      },
+      "block_order": [
+        "config_block_cmK9YT",
+        "config_block_M3cVX6",
+        "config_block_M6A9gh"
+      ],
       "name": "Configurator",
       "settings": {}
     }
