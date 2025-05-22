@@ -2,12 +2,53 @@ html {
     scroll-behavior: smooth;
 }
 
+/*
+** CSS Should removed on deployment
+*/
 .container {
   padding: 0;
   width: 1215px;
   max-width: 100%;
   margin: 0 auto;
 }
+
+.text-white {
+  color: #f9f6f3;
+}
+
+a.learn-more-arrow, .learn-more-arrow {
+  padding: 0 26px;
+  height: 50px;
+  border-radius: 80px;
+  margin-top: 21px;
+  color: #292521;
+  font-size: 16px;
+  line-height: 23px;
+  font-weight: 450;
+  min-width: 180px;
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0px 15px;
+  letter-spacing: .65px;
+  width: max-content;
+  max-width: 100%;
+}
+
+a.learn-more-arrow svg {
+  width: 18.06px;
+}
+
+@media screen and (max-width: 1300px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+
+/*
+** End CSS should removed after deployment
+*/
 
 .landing-pg-carousel{
     display: flex;
@@ -323,12 +364,6 @@ a.learn-more-arrow, .learn-more-arrow{
         font-size: 51px;
         line-height: 42px;
     }
-}
-
-@media screen and (max-width: 1300px) {
-  .container {
-    padding: 0 20px;
-  }
 }
 
 @media (min-width: 992px){

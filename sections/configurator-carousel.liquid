@@ -30,13 +30,13 @@
                 <div class="column-content">
                   <img src="{{ block.settings.animated_box_image | img_url: 'original' }}" alt="grid image" />
 
-                  <span class="image-grid-title font-neue-roman">{{ section.settings.animated_box_tag }}</span>
+                  <span class="image-grid-title font-neue-roman">{{ block.settings.animated_box_tag }}</span>
                   <div class="content">
                       <div class="col-content-row">
                           <div class="col-content-left">
-                              <h2 class="text-white font-neue-light">{{ section.settings.animated_box_heading }} <br><span class="font-austin-italic">{{ section.settings.animated_box_heading_italic }}</span></h2>
+                              <h2 class="text-white font-neue-light">{{ block.settings.animated_box_heading }} <br><span class="font-austin-italic">{{ block.settings.animated_box_heading_italic }}</span></h2>
                               <div class="column-btns-row">
-                                  <a class="learn-more-arrow btn-light font-neue-roman" href="{{ section.settings.discover_button_text_url }}">{{ section.settings.discover_button_text }} 
+                                  <a class="learn-more-arrow btn-light font-neue-roman" href="{{ block.settings.discover_button_text_url }}">{{ block.settings.discover_button_text }} 
                                   <svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.04 11.49">
                                       <defs>
                                           <style>.cls-1{stroke-miterlimit:5;}.cls-1,.cls-2{fill:none;stroke:#000;stroke-width:1.5px;}.cls-2{stroke-linejoin:round;}</style>
@@ -86,6 +86,16 @@
         </button>
       </div>
     </section>
+
+    <section>
+  <h3>Test Object Debug:</h3>
+  <p>Test object exists: {% if shop.metaobjects.test_object %}YES{% else %}NO{% endif %}</p>
+  <p>Test object count: {{ shop.metaobjects.test_object.size }}</p>
+  
+  {% for item in shop.metaobjects.test_object %}
+    <p>Found: {{ item.name.value }}</p>
+  {% endfor %}
+</section>
   </div>
 </div>
         

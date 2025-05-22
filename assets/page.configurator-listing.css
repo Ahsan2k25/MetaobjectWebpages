@@ -2,12 +2,25 @@ html {
     scroll-behavior: smooth;
 }
 
+/*
+** CSS should remove after deployment
+*/
 .container {
     padding: 0;
     width: 1215px;
     max-width: 100%;
     margin: 0 auto;
 }
+
+@media screen and (max-width: 1300px) {
+  .container {
+    padding: 0 20px;
+  }
+}
+
+/*
+** End CSS should remove after deployment
+*/
 
 .dealer-breadcrumbs a, 
 .dealer-breadcrumbs span,
@@ -118,11 +131,6 @@ ul.dealer-top-navigation li a.active{
 /*
 ** Responsive
 */
-@media screen and (max-width: 1300px) {
-  .container {
-    padding: 0 20px;
-  }
-}
 
 @media (max-width: 991px){
     .dealer-breadcrumbs a, 
