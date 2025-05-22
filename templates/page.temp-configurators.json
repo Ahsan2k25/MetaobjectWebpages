@@ -20,7 +20,9 @@
     "configurator_carousel_Ujnabr": {
       "type": "configurator-carousel",
       "name": "Configurator Carousel",
-      "settings": {}
+      "settings": {
+        "quick_links_heading": "Quick Links"
+      }
     }
   },
   "order": [
