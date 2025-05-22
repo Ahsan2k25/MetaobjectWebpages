@@ -86,16 +86,6 @@
         </button>
       </div>
     </section>
-
-    <section>
-  <h3>Test Object Debug:</h3>
-  <p>Test object exists: {% if shop.metaobjects.test_object %}YES{% else %}NO{% endif %}</p>
-  <p>Test object count: {{ shop.metaobjects.test_object.size }}</p>
-  
-  {% for item in shop.metaobjects.test_object %}
-    <p>Found: {{ item.name.value }}</p>
-  {% endfor %}
-</section>
   </div>
 </div>
         
