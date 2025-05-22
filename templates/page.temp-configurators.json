@@ -51,10 +51,16 @@
       "settings": {
         "quick_links_heading": "Quick Links"
       }
+    },
+    "main_configurator_collections_VX7rDC": {
+      "type": "main-configurator-collections",
+      "name": "Configurator",
+      "settings": {}
     }
   },
   "order": [
     "main",
-    "configurator_carousel_Ujnabr"
+    "configurator_carousel_Ujnabr",
+    "main_configurator_collections_VX7rDC"
   ]
 }
