@@ -1,5 +1,119 @@
-asdas dasdas 
+<div class="configurator-landing">
+  <div class="container">
+    <section class="customer-carousel-grid-row">
+      {% comment %} Carousel items start {% endcomment %}
+       <div class="landing-pg-carousel">
+        <div class="customer-carousel-column customer-columns">
+          <div class="column-content">
+            <div class="customer-details">
+              <h2 class="font-neue-roman">Welcome back {{ customer.first_name }}!</h2>
+              <p class="font-neue-roman">Congratulations on your <strong>Ruby Status</strong>. <br>Free Freight on order over $2500</p>
+              {% comment %} <p class="customer-status font-neue-roman">You are $25,000 from your Diamond Status</p> {% endcomment %}
 
+              <h2 class="font-neue-roman quick-links-heading">Quick Links</h2>
+              <ul class="quick-links">
+                <li><a href="/pages/projects" class="font-calling-code">PROJECTS</a></li>
+                <li><a href="https://shopify.com/{{ shop.id }}/account/orders" class="font-calling-code">ORDERS</a></li>
+                <li><a href="/pages/resources#spec-sheets" class="font-calling-code">ARTAFEX 2 SPEC SHEETS</a></li>
+                <li><a href="/pages/resources#spec-sheets" class="font-calling-code">ARTAFEX 4 SPEC SHEETS</a></li>
+                <li><a href="/pages/resources#spec-sheets" class="font-calling-code">LINEAR SPEC SHEETS</a></li>
+                <li><a href="/pages/resources#spec-sheets" class="font-calling-code">PHASEX SPEC SHEETS</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="customer-carousel-column">
+          <div class="column-content">
+            <img src="{{ 'customer-carousel-img1.jpg' | asset_url }}" alt="grid image" />
+
+            <span class="image-grid-title font-neue-roman">Don’t Miss</span>
+            <div class="content">
+                <div class="col-content-row">
+                    <div class="col-content-left">
+                        <h2 class="text-white font-neue-light">Retrofit <br><span class="font-austin-italic">sample case</span></h2>
+                        <div class="column-btns-row">
+                            <a class="learn-more-arrow btn-light font-neue-roman" href="#">Discover 
+                            <svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.04 11.49">
+                                <defs>
+                                    <style>.cls-1{stroke-miterlimit:5;}.cls-1,.cls-2{fill:none;stroke:#000;stroke-width:1.5px;}.cls-2{stroke-linejoin:round;}</style>
+                                </defs>
+                                <g id="Layer_2-2">
+                                    <polyline class="cls-1" points="12.45 .54 17.95 5.74 12.45 10.94"></polyline>
+                                    <line class="cls-2" y1="5.74" x2="17.95" y2="5.74"></line>
+                                </g>
+                            </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="customer-carousel-column">
+          <div class="column-content">
+            <img src="{{ 'customer-carousel-img2.jpg' | asset_url }}" alt="grid image" />
+
+            <span class="image-grid-title font-neue-roman">Limited Time Offer</span>
+            <div class="content">
+                <div class="col-content-row">
+                    <div class="col-content-left">
+                        <h2 class="text-white font-neue-light">Discover our <br><span class="font-austin-italic">TuneUp offer</span></h2>
+                        <div class="column-btns-row">
+                            <a class="learn-more-arrow btn-light font-neue-roman" href="#">Discover 
+                            <svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.04 11.49">
+                                <defs>
+                                    <style>.cls-1{stroke-miterlimit:5;}.cls-1,.cls-2{fill:none;stroke:#000;stroke-width:1.5px;}.cls-2{stroke-linejoin:round;}</style>
+                                </defs>
+                                <g id="Layer_2-2">
+                                    <polyline class="cls-1" points="12.45 .54 17.95 5.74 12.45 10.94"></polyline>
+                                    <line class="cls-2" y1="5.74" x2="17.95" y2="5.74"></line>
+                                </g>
+                            </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </div>
+        </div>
+       </div>
+
+       <div class="progress-bar">
+        <div class="progress"></div>
+      </div>
+
+      <div class="carousel-controls">
+        <button id="prev-btn" class="prevslide-btn disabled">
+          <svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.04 11.49">
+              <defs>
+                  <style>.cls-1{stroke-miterlimit:5;}.cls-1,.cls-2{fill:none;stroke:#000;stroke-width:1.5px;}.cls-2{stroke-linejoin:round;}</style>
+              </defs>
+              <g id="Layer_2-2">
+                  <polyline class="cls-1" points="6.59 .54 1.09 5.74 6.59 10.94"/>
+                  <line class="cls-2" x1="19.04" y1="5.74" x2="1.09" y2="5.74"/>
+              </g>
+          </svg>
+        </button>
+        <button id="next-btn" class="nextslide-btn">
+          <svg id="Layer_2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.04 11.49">
+              <defs>
+                  <style>.cls-1{stroke-miterlimit:5;}.cls-1,.cls-2{fill:none;stroke:#000;stroke-width:1.5px;}.cls-2{stroke-linejoin:round;}</style>
+              </defs>
+              <g id="Layer_2-2">
+                  <polyline class="cls-1" points="12.45 .54 17.95 5.74 12.45 10.94"/>
+                  <line class="cls-2" y1="5.74" x2="17.95" y2="5.74"/>
+              </g>
+          </svg>
+        </button>
+      </div>
+  
+      {% comment %} Carousel items end {% endcomment %}
+    </section>
+  </div>
+</div>
+                    
 {% schema %}
   {
     "name": "Configurator Carousel",
