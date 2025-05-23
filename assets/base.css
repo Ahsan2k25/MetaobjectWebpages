@@ -18,11 +18,11 @@
 /* Neue Haas Grotesk Display Pro */
 @font-face {
   font-family: "Neue Haas Grotesk Display Pro";
-  src: url("https://cdn.shopify.com/s/files/1/0705/5337/0839/files/NeueHaasDisplay-LightItalic.woff2?v=1723556370")
+  src: url("https://cdn.shopify.com/s/files/1/0939/5686/6322/files/NeueHaasDisplay-LightItalic.woff2?v=1747997866")
       format("woff2"),
-    url("https://cdn.shopify.com/s/files/1/0705/5337/0839/files/NeueHaasDisplay-LightItalic.woff?v=1723556370")
+    url("https://cdn.shopify.com/s/files/1/0939/5686/6322/files/NeueHaasDisplay-LightItalic.woff?v=1747997865")
       format("woff"),
-    url("https://cdn.shopify.com/s/files/1/0705/5337/0839/files/NeueHaasDisplay-LightItalic.ttf?v=1723556370")
+    url("https://cdn.shopify.com/s/files/1/0939/5686/6322/files/NeueHaasDisplay-LightItalic.ttf?v=1747997866")
       format("truetype");
   font-weight: 300;
   font-style: italic;
@@ -31,11 +31,11 @@
 
 @font-face {
   font-family: "Neue Haas Grotesk Display Pro";
-  src: url("https://cdn.shopify.com/s/files/1/0705/5337/0839/files/NeueHaasDisplay-BoldItalic.woff2?v=1723556370")
+  src: url("https://cdn.shopify.com/s/files/1/0939/5686/6322/files/NeueHaasDisplay-BoldItalic.woff2?v=1747997865")
       format("woff2"),
-    url("https://cdn.shopify.com/s/files/1/0705/5337/0839/files/NeueHaasDisplay-BoldItalic.woff?v=1723556370")
+    url("https://cdn.shopify.com/s/files/1/0939/5686/6322/files/NeueHaasDisplay-BoldItalic.woff?v=1747997865")
       format("woff"),
-    url("https://cdn.shopify.com/s/files/1/0705/5337/0839/files/NeueHaasDisplay-BoldItalic.ttf?v=1723556370")
+    url("https://cdn.shopify.com/s/files/1/0939/5686/6322/files/NeueHaasDisplay-BoldItalic.ttf?v=1747997865")
       format("truetype");
   font-weight: bold;
   font-style: italic;
@@ -229,11 +229,11 @@
 */
 @font-face {
   font-family: "Austin";
-  src: url("https://cdn.shopify.com/s/files/1/0705/5337/0839/files/Austin-LightItalic.woff2?v=1723561218")
+  src: url("https://cdn.shopify.com/s/files/1/0939/5686/6322/files/Austin-LightItalic.woff2?v=1747997782")
       format("woff2"),
-    url("https://cdn.shopify.com/s/files/1/0705/5337/0839/files/Austin-LightItalic.woff?v=1723561218")
+    url("https://cdn.shopify.com/s/files/1/0939/5686/6322/files/Austin-LightItalic.woff?v=1747997782")
       format("woff"),
-    url("https://cdn.shopify.com/s/files/1/0705/5337/0839/files/Austin-LightItalic.ttf?v=1723561218")
+    url("https://cdn.shopify.com/s/files/1/0939/5686/6322/files/Austin-LightItalic.ttf?v=1747997782")
       format("truetype");
   font-weight: 300;
   font-style: italic;
