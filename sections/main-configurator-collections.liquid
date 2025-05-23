@@ -1,9 +1,44 @@
+{% assign configurator = page.metafields.custom.configurator.value %}
 
+<div class="configurator-landing">
+  <div class="container">
+    <section class="config-collections">
+      <div class="config-top-header">
+        <h2 class="font-neue-light">Configurators</h2>
+        <ul class="collection-anchors">
+          {% for conf in configurator %}
+            <li><a href="#{{ conf.configurator_name.value }}" class="font-calling-code collection-active">{{ conf.configurator_name.value }}</a></li>
+          {% endfor %}
+        </ul>
+      </div>
+      <div class="config-bottom-area">
+        {% for conf in configurator %}
+          {% assign nested_collections = conf.configurator_collection.value %}
 
-
-
-
-
+          <div class="config-collection-box" id="{{ conf.configurator_name.value }}">
+            <h2 class="font-neue-roman">{{ conf.configurator_name.value }}</h2>
+            <div class="collection-list-boxes">
+              {% for nested in nested_collections %}
+                <div class="collection-list-item">
+                  <a href="/pages/configurator-collections/{{ nested.collection_name.value | downcase | replace: ' ', '-' }}">
+                    <img src="{{ nested.collection_image.value | image_url: width: 226 }}" width="226" height="305" alt="collection image" />
+                  </a>
+                  <div class="collection-content">
+                    <h3 class="font-neue-roman">{{ nested.collection_name.value }}</h3>
+                    <a href="/pages/configurator-collections/{{ nested.collection_name.value | downcase | replace: ' ', '-' }}">
+                      {{ nested.configure_button_text.value }} 
+                      {% render 'arrow-icon-configure' %}
+                    </a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  </div>
+</div>
 
 {% schema %}
 {
@@ -16,5 +51,3 @@
   ]
 }
 {% endschema %}
-
-
