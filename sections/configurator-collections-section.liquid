@@ -22,6 +22,7 @@
           <li>No child categories found for this parent.</li>
         {% endfor %}
       </ul>
+      <pre>{{ parent | json }}</pre>
     </li>
   {% endfor %}
   <li>Configurator Collections: {{ shop.metaobjects.configurator_collections.values.size }}</li>
