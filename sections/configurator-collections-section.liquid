@@ -9,8 +9,8 @@
     <li>
       <strong>{{ parent.configurator_name }}</strong>
       <ul>
-        {% if parent.configurator_collection.values %}
-          {% for child_gid in parent.configurator_collection.values %}
+        {% if parent.configurator_collection %}
+          {% for child_gid in parent.configurator_collection %}
             {% assign child = child_gid %}
             <li>
               {{ child_gid.collection_name }}
