@@ -1,6 +1,71 @@
-{% schema %}
-  {
-    "name": "Section name",
-    "settings": []
+{% comment %}
+  This section renders the metaobject data for a Configurator Collection web page.
+  It assumes the page is a metaobject web page and `metaobject` is available.
+{% endcomment %}
+
+<div class="configurator-collections">
+  <h2>{{ metaobject.collection_name }}</h2>
+  <nav>
+    {% for nested in metaobject.configurator_nested_collection %}
+      <a href="#{{ nested.collection_name | handleize }}">{{ nested.collection_display_name }}</a>
+    {% endfor %}
+  </nav>
+
+  {% for nested in metaobject.configurator_nested_collection %}
+    <section id="{{ nested.collection_name | handleize }}">
+      <h3>{{ nested.collection_display_name }}</h3>
+      <div class="postcard-grid">
+        {% for card in nested.conf_product_cards %}
+          <div class="postcard">
+            <img src="{{ card.product_card_image | image_url }}" alt="{{ card.product_name }}">
+            <div>{{ card.product_name }}</div>
+            <a href="{{ card.configure_button_url }}">{{ card.configure_button_text }}</a>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endfor %}
+</div>
+
+<style>
+/* Responsive grid/carousel styles */
+@media (max-width: 600px) {
+  .postcard-grid {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
   }
+  .postcard {
+    min-width: 60vw;
+    scroll-snap-align: start;
+    margin-right: 16px;
+  }
+}
+@media (min-width: 601px) {
+  .postcard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 24px;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Configurator Section",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_heading",
+      "label": "Custom Heading (optional)",
+      "default": "Default heading"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Configurator Section"
+    }
+  ]
+}
 {% endschema %}
