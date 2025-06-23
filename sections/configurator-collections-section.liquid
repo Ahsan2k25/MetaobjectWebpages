@@ -9,8 +9,8 @@
     <li>
       <strong>{{ parent.configurator_name }}</strong>
       <ul>
-        {% for child_gid in parent.configurator_collection %}
-          {% assign child_obj = child_gid | metaobject_by_id %}
+        {% for child in parent.configurator_collection %}
+          {% assign child_obj = child %}
           <li>
             {{ child_obj.collection_name }}
             <!-- Optionally, add image and link -->
