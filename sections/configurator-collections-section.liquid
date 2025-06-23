@@ -6,9 +6,23 @@
 <p>Section loaded!</p>
 <ul>
   {% for parent in shop.metaobjects.configurator.values %}
-    <li>{{ parent.configurator_name }}</li>
-  {% else %}
-    <li>No configurators found.</li>
+    <li>
+      <strong>{{ parent.configurator_name }}</strong>
+      <ul>
+        {% for child in parent.configurator_collection %}
+          <li>
+            {{ child.collection_name }}
+            <!-- Optionally, add image and link -->
+            {% if child.collection_image %}
+              <img src="{{ child.collection_image | image_url }}" alt="{{ child.collection_name }}" style="max-width: 100px;">
+            {% endif %}
+            <a href="{{ child.url }}">Configure &rarr;</a>
+          </li>
+        {% else %}
+          <li>No child categories found for this parent.</li>
+        {% endfor %}
+      </ul>
+    </li>
   {% endfor %}
   <li>Configurator Collections: {{ shop.metaobjects.configurator_collections.values.size }}</li>
   <li>Configurator Nested Collections: {{ shop.metaobjects.configurator_nested_collections.values.size }}</li>
