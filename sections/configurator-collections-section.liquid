@@ -9,20 +9,29 @@
     <li>
       <strong>{{ parent.configurator_name }}</strong>
       <ul>
-        {% if parent.configurator_collection %}
-          {% for child_gid in parent.configurator_collection.values %}
-            {% assign child = child_gid | metaobject_by_id %}
-            <li>
-              {{ child.collection_name }}
+        {% comment %}
+          IMPORTANT: Use .value to get the list of actual metaobject objects, not just their IDs.
+        {% endcomment %}
+        {% for child in parent.configurator_collection.value %}
+          <li>
+            {% comment %}
+              Check if the child object exists. It will be empty if the referenced metaobject is in a 'Draft' state.
+            {% endcomment %}
+            {% if child %}
+              <strong>Child Name:</strong> {{ child.collection_name }}
+              <br>
               {% if child.collection_image %}
-                <img src="{{ child.collection_image | image_url }}" alt="{{ child.collection_name }}" style="max-width: 100px;">
+                <img src="{{ child.collection_image | image_url: width: 100 }}" alt="{{ child.collection_name }}">
               {% endif %}
+              <br>
               <a href="{{ child.url }}">Configure &rarr;</a>
-            </li>
-          {% endfor %}
+            {% else %}
+              A linked child category was found, but it's in a 'Draft' state. Please set it to 'Active'.
+            {% endif %}
+          </li>
         {% else %}
           <li>No child categories found for this parent.</li>
-        {% endif %}
+        {% endfor %}
       </ul>
       <pre>{{ parent | json }}</pre>
     </li>
