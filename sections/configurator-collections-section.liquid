@@ -12,9 +12,8 @@
         {% if parent.configurator_collection.values %}
           {% for child_gid in parent.configurator_collection.values %}
             {% assign child = child_gid %}
-            {{ child | json }}
             <li>
-              {{ child.collection_name }}
+              {{ child_gid.collection_name }}
               {% if child.collection_image %}
                 <img src="{{ child.collection_image | image_url }}" alt="{{ child.collection_name }}" style="max-width: 100px;">
               {% endif %}
