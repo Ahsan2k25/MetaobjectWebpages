@@ -14,17 +14,9 @@
       "disabled": true,
       "name": "Configurator Listing",
       "settings": {}
-    },
-    "configurator_collections_section_tL9ikm": {
-      "type": "configurator-collections-section",
-      "name": "Configurator Section",
-      "settings": {
-        "custom_heading": "Default heading"
-      }
     }
   },
   "order": [
-    "configurator_listing_3jPazE",
-    "configurator_collections_section_tL9ikm"
+    "configurator_listing_3jPazE"
   ]
 }
