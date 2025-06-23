@@ -17,14 +17,16 @@
         "padding_bottom": 28
       }
     },
-    "main_configurator_collections_7H3q4J": {
-      "type": "main-configurator-collections",
+    "configurator_collections_section_xcEVLq": {
+      "type": "configurator-collections-section",
       "name": "Configurator Section",
-      "settings": {}
+      "settings": {
+        "custom_heading": "Default heading"
+      }
     }
   },
   "order": [
     "main",
-    "main_configurator_collections_7H3q4J"
+    "configurator_collections_section_xcEVLq"
   ]
 }
