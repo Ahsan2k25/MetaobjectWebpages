@@ -10,11 +10,10 @@
       <strong>{{ parent.configurator_name }}</strong>
       <ul>
         {% if parent.configurator_collection %}
-          {% for child_gid in parent.configurator_collection %}
-            {% assign child = child_gid %}
-            {{ child | json }}
+          {% for child_gid in parent.configurator_collection.values %}
+            {% assign child = child_gid | metaobject_by_id %}
             <li>
-              {{ child_gid.collection_name }}
+              {{ child.collection_name }}
               {% if child.collection_image %}
                 <img src="{{ child.collection_image | image_url }}" alt="{{ child.collection_name }}" style="max-width: 100px;">
               {% endif %}
