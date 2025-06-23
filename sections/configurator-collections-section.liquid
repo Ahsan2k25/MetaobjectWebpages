@@ -41,13 +41,13 @@
               {% endfor %}
             </div>
             {% if child_categories.size > 1 %}
-              <div class="carousel-progress-bar">
-                <div class="carousel-progress" style="width: 0%"></div>
-              </div>
-              <div class="carousel-dots">
-                {% for child in child_categories %}
-                  <span class="dot{% if forloop.first %} active{% endif %}"></span>
-                {% endfor %}
+              <div class="carousel-indicators">
+                <span class="carousel-progress-text">1/{{ child_categories.size }}</span>
+                <div class="carousel-dots">
+                  {% for child in child_categories %}
+                    <span class="dot{% if forloop.first %} active{% endif %}"></span>
+                  {% endfor %}
+                </div>
               </div>
             {% endif %}
           </div>
@@ -142,8 +142,7 @@
       font-size: 0.9rem;
       color: #333;
     }
-    .carousel-dots,
-    .carousel-progress-bar {
+    .carousel-indicators {
       display: none;
     }
   
@@ -159,28 +158,43 @@
         overflow-x: auto;
         scroll-snap-type: x mandatory;
         gap: 16px;
-        padding-bottom: 1.5rem; /* for scrollbar and dots */
-        scrollbar-width: none; /* Firefox */
+        padding-bottom: 1.5rem;
+        scrollbar-width: none;
       }
       .category-grid::-webkit-scrollbar {
-        display: none; /* Chrome, Safari */
+        display: none;
       }
       .category-card {
         flex: 0 0 65%;
         scroll-snap-align: start;
       }
-      .carousel-dots {
+      .carousel-indicators {
         display: flex;
-        justify-content: center;
+        align-items: center;
+        gap: 1rem;
         margin-top: -1.2rem;
         margin-bottom: 1.5rem;
         position: relative;
         z-index: 2;
+        font-size: 1rem;
+        color: #333;
+      }
+      .carousel-progress-text {
+        font-size: 1rem;
+        min-width: 2.5em;
+        text-align: left;
+        color: #333;
+        font-family: inherit;
+      }
+      .carousel-dots {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 6px;
       }
       .dot {
         height: 8px;
         width: 8px;
-        margin: 0 4px;
         background-color: #bbb;
         border-radius: 50%;
         display: inline-block;
@@ -189,59 +203,37 @@
       .dot.active {
         background-color: #333;
       }
-      .carousel-progress-bar {
-        display: block;
-        width: 100%;
-        height: 3px;
-        background: #e0e0e0;
-        border-radius: 2px;
-        margin: 0.5rem 0 0.5rem 0;
-        position: relative;
-        overflow: hidden;
-      }
-      .carousel-progress {
-        height: 100%;
-        background: #333;
-        width: 0%;
-        border-radius: 2px;
-        transition: width 0.2s;
-      }
     }
   </style>
   
   <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // For each carousel on the page
     document.querySelectorAll('.category-grid').forEach(function(carousel) {
       const cards = carousel.querySelectorAll('.category-card');
       const dots = carousel.parentElement.querySelectorAll('.dot');
-      const progressBar = carousel.parentElement.querySelector('.carousel-progress');
-      if (cards.length < 2) return; // No need for carousel controls
+      const progressText = carousel.parentElement.querySelector('.carousel-progress-text');
+      if (cards.length < 2) return;
   
-      // Helper to get the current index
       function getCurrentIndex() {
         const scrollLeft = carousel.scrollLeft;
-        const cardWidth = cards[0].offsetWidth + 16; // 16px gap
+        const cardWidth = cards[0].offsetWidth + 16;
         return Math.round(scrollLeft / cardWidth);
       }
   
-      // Update dots and progress bar
       function updateCarouselUI() {
         const idx = getCurrentIndex();
         dots.forEach((dot, i) => {
           dot.classList.toggle('active', i === idx);
         });
-        if (progressBar) {
-          progressBar.style.width = ((idx + 1) / cards.length * 100) + '%';
+        if (progressText) {
+          progressText.textContent = (idx + 1) + '/' + cards.length;
         }
       }
   
-      // Listen for scroll
       carousel.addEventListener('scroll', function() {
         updateCarouselUI();
       });
   
-      // Dots click
       dots.forEach((dot, i) => {
         dot.addEventListener('click', function() {
           const cardWidth = cards[0].offsetWidth + 16;
