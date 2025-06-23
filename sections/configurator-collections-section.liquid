@@ -12,6 +12,7 @@
         {% if parent.configurator_collection %}
           {% for child_gid in parent.configurator_collection %}
             {% assign child = child_gid %}
+            {{ child | json }}
             <li>
               {{ child_gid.collection_name }}
               {% if child.collection_image %}
