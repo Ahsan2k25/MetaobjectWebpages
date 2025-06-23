@@ -9,19 +9,20 @@
     <li>
       <strong>{{ parent.configurator_name }}</strong>
       <ul>
-        {% for child in parent.configurator_collection %}
-          {% assign child_obj = child %}
-          <li>
-            {{ child_obj.collection_name }}
-            <!-- Optionally, add image and link -->
-            {% if child_obj.collection_image %}
-              <img src="{{ child_obj.collection_image | image_url }}" alt="{{ child_obj.collection_name }}" style="max-width: 100px;">
-            {% endif %}
-            <a href="{{ child_obj.url }}">Configure &rarr;</a>
-          </li>
+        {% if parent.configurator_collection %}
+          {% for child_gid in parent.configurator_collection %}
+            {% assign child = child_gid | metaobject_by_id %}
+            <li>
+              {{ child.collection_name }}
+              {% if child.collection_image %}
+                <img src="{{ child.collection_image | image_url }}" alt="{{ child.collection_name }}" style="max-width: 100px;">
+              {% endif %}
+              <a href="{{ child.url }}">Configure &rarr;</a>
+            </li>
+          {% endfor %}
         {% else %}
           <li>No child categories found for this parent.</li>
-        {% endfor %}
+        {% endif %}
       </ul>
       <pre>{{ parent | json }}</pre>
     </li>
