@@ -8,6 +8,7 @@
   {% for parent in shop.metaobjects.configurator.values %}
     <li>
       <strong>{{ parent.configurator_name }}</strong>
+      {{ parent | json }}
       <ul>
         {% if parent.configurator_collection %}
           {% for child_gid in parent.configurator_collection.values %}
