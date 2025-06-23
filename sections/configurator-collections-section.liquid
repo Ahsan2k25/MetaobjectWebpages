@@ -3,6 +3,13 @@
   It assumes the page is a metaobject web page and `metaobject` is available.
 {% endcomment %}
 
+<p>Section loaded!</p>
+{% if shop.metaobjects.configurator %}
+  <p>Metaobjects found: {{ shop.metaobjects.configurator.values.size }}</p>
+{% else %}
+  <p>No metaobjects object found.</p>
+{% endif %}
+
 <div class="configurator-collections">
   <h2>{{ metaobject.collection_name }}</h2>
   <nav>
@@ -59,7 +66,7 @@
       "type": "text",
       "id": "custom_heading",
       "label": "Custom Heading (optional)",
-      "default": "Default heading"
+      "default": "Test heading"
     }
   ],
   "presets": [
