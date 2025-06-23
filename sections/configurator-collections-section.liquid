@@ -13,6 +13,7 @@
         <section id="{{ parent.configurator_name | handleize }}" class="configurator-parent-section">
           <h3 class="configurator-parent-title">{{ parent.configurator_name }}</h3>
           {% assign child_categories = parent.configurator_collection.value %}
+          {% assign child_categories_count = child_categories | size %}
           <div class="category-grid-wrapper">
             <div class="category-grid" data-carousel>
               {% for child in child_categories %}
@@ -40,9 +41,9 @@
                 {% endif %}
               {% endfor %}
             </div>
-            {% if child_categories.size > 1 %}
+            {% if child_categories_count > 1 %}
               <div class="carousel-indicators">
-                <span class="carousel-progress-text">1/{{ child_categories.size }}</span>
+                <span class="carousel-progress-text">1/{{ child_categories_count }}</span>
                 <div class="carousel-dots">
                   {% for child in child_categories %}
                     <span class="dot{% if forloop.first %} active{% endif %}"></span>
