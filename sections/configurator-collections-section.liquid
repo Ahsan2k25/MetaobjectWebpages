@@ -40,7 +40,7 @@
                 {% endif %}
               {% endfor %}
             </div>
-            {% if child_categories > 1 %}
+            {% if child_categories != null %}
               <div class="carousel-indicators">
                 <span class="carousel-progress-text">1/{{ child_categories.size }}</span>
                 <div class="carousel-dots">
