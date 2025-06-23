@@ -9,7 +9,7 @@
     <li>
       <strong>{{ parent.configurator_name }}</strong>
       <ul>
-        {% if parent.configurator_collection %}
+        {% if parent.configurator_collection.values %}
           {% for child_gid in parent.configurator_collection %}
             {% assign child = child_gid | metaobject_by_id %}
             <li>
