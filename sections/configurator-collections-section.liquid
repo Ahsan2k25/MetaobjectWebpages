@@ -1,115 +1,220 @@
 {% comment %}
-  This section renders the metaobject data for a Configurator Collection web page.
-  It assumes the page is a metaobject web page and `metaobject` is available.
+  Section for the main Configurator Landing Page.
+  It loops through parent categories (e.g., Recessed, Linear)
+  and displays their child categories (e.g., Artafex 2, Artafex 4)
+  in a grid or a mobile-friendly carousel.
 {% endcomment %}
 
-<p>Section loaded!</p>
-<ul>
-  {% for parent in shop.metaobjects.configurator.values %}
-    <li>
-      <strong>{{ parent.configurator_name }}</strong>
-      <ul>
-        {% comment %}
-          IMPORTANT: Use .value to get the list of actual metaobject objects, not just their IDs.
-        {% endcomment %}
-        {% for child in parent.configurator_collection.value %}
-          <li>
-            {% comment %}
-              Check if the child object exists. It will be empty if the referenced metaobject is in a 'Draft' state.
-            {% endcomment %}
-            {% if child %}
-              <strong>Child Name:</strong> {{ child.collection_name }}
-              <br>
-              {% if child.collection_image %}
-                <img src="{{ child.collection_image | image_url: width: 100 }}" alt="{{ child.collection_name }}">
-              {% endif %}
-              <br>
-              <a href="{{ child.url }}">Configure &rarr;</a>
-            {% else %}
-              A linked child category was found, but it's in a 'Draft' state. Please set it to 'Active'.
-            {% endif %}
-          </li>
-        {% else %}
-          <li>No child categories found for this parent.</li>
-        {% endfor %}
-      </ul>
-      <pre>{{ parent | json }}</pre>
-    </li>
-  {% endfor %}
-  <li>Configurator Collections: {{ shop.metaobjects.configurator_collections.values.size }}</li>
-  <li>Configurator Nested Collections: {{ shop.metaobjects.configurator_nested_collections.values.size }}</li>
-  <li>Configurator Product Card: {{ shop.metaobjects.configurator_product_card.values.size }}</li>
-</ul>
-
-{% if shop.metaobjects.configurator %}
-  <p>Metaobjects found: {{ shop.metaobjects.configurator.values.size }}</p>
-{% else %}
-  <p>No metaobjects object found.</p>
-{% endif %}
-
-<div class="configurator-collections">
-  <h2>{{ metaobject.collection_name }}</h2>
-  <nav>
-    {% for nested in metaobject.configurator_nested_collection %}
-      <a href="#{{ nested.collection_name | handleize }}">{{ nested.collection_display_name }}</a>
-    {% endfor %}
-  </nav>
-
-  {% for nested in metaobject.configurator_nested_collection %}
-    <section id="{{ nested.collection_name | handleize }}">
-      <h3>{{ nested.collection_display_name }}</h3>
-      <div class="postcard-grid">
-        {% for card in nested.conf_product_cards %}
-          <div class="postcard">
-            <img src="{{ card.product_card_image | image_url }}" alt="{{ card.product_name }}">
-            <div>{{ card.product_name }}</div>
-            <a href="{{ card.configure_button_url }}">{{ card.configure_button_text }}</a>
-          </div>
-        {% endfor %}
+<div class="configurator-landing-page">
+    <div class="page-width">
+      <div class="configurator-header">
+        <h2 class="configurator-main-title">Configurators</h2>
+        <nav class="configurator-nav">
+          {% for parent in shop.metaobjects.configurator.values %}
+            <a href="#{{ parent.configurator_name | handleize }}">{{ parent.configurator_name }}</a>
+          {% endfor %}
+        </nav>
       </div>
-    </section>
-  {% endfor %}
-</div>
-
-<style>
-/* Responsive grid/carousel styles */
-@media (max-width: 600px) {
-  .postcard-grid {
-    display: flex;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-  }
-  .postcard {
-    min-width: 60vw;
-    scroll-snap-align: start;
-    margin-right: 16px;
-  }
-}
-@media (min-width: 601px) {
-  .postcard-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 24px;
-  }
-}
-</style>
-
-{% schema %}
-{
-  "name": "Configurator Section",
-  "tag": "section",
-  "settings": [
-    {
-      "type": "text",
-      "id": "custom_heading",
-      "label": "Custom Heading (optional)",
-      "default": "Test heading"
+  
+      {% for parent in shop.metaobjects.configurator.values %}
+        <section id="{{ parent.configurator_name | handleize }}" class="configurator-parent-section">
+          <h3 class="configurator-parent-title">{{ parent.configurator_name }}</h3>
+          <div class="category-grid-wrapper">
+            <div class="category-grid">
+              {% comment %}
+                Use .value to get the list of actual metaobject objects.
+              {% endcomment %}
+              {%- assign child_categories = parent.configurator_collection.value -%}
+              {% for child in child_categories %}
+                {% if child %}
+                  <div class="category-card">
+                    {% if child.collection_image %}
+                      <a href="{{ child.url }}" class="category-card__image-link">
+                        <img
+                          class="category-card__image"
+                          src="{{ child.collection_image | image_url: width: 400 }}"
+                          alt="{{ child.collection_image.alt | escape }}"
+                          width="400"
+                          height="{{ 400 | divided_by: child.collection_image.aspect_ratio | round }}"
+                          loading="lazy"
+                        >
+                      </a>
+                    {% endif %}
+                    <div class="category-card__info">
+                      <h4 class="category-card__title">{{ child.collection_name }}</h4>
+                      {% comment %}
+                        The child.url is automatically created by Shopify because
+                        "Publish entries as web page" is enabled for this metaobject.
+                      {% endcomment %}
+                      <a href="{{ child.url }}" class="category-card__link">
+                        Configure &rarr;
+                      </a>
+                    </div>
+                  </div>
+                {% endif %}
+              {% else %}
+                  <p>No child categories are linked for this section.</p>
+              {% endfor %}
+            </div>
+            {% if child_categories.size > 2 %}
+              <div class="carousel-dots">
+                {% for child in child_categories %}
+                   <span class="dot"></span>
+                {% endfor %}
+              </div>
+             {% endif %}
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  </div>
+  
+  <style>
+    :root {
+      --color-text: #333;
+      --color-background: #f7f5f3;
+      --color-border: #d1cdc7;
     }
-  ],
-  "presets": [
-    {
-      "name": "Configurator Section"
+    .configurator-landing-page {
+      background-color: var(--color-background);
+      color: var(--color-text);
+      padding: 3rem 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
     }
-  ]
-}
-{% endschema %}
+    .page-width {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .configurator-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+    .configurator-main-title {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .configurator-nav {
+      display: flex;
+      gap: 2rem;
+    }
+    .configurator-nav a {
+      text-decoration: none;
+      color: var(--color-text);
+      font-weight: 400;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .configurator-parent-section {
+      margin-bottom: 3rem;
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 2rem;
+    }
+    .configurator-parent-section:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    .configurator-parent-title {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 0 0 1.5rem 0;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .category-card {
+      text-align: left;
+    }
+    .category-card__image-link {
+      display: block;
+      margin-bottom: 1rem;
+      background-color: #e9e6e3;
+      overflow: hidden;
+    }
+    .category-card__image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1.1;
+      object-fit: cover;
+      display: block;
+    }
+    .category-card__info {
+      padding: 0 0.5rem;
+    }
+    .category-card__title {
+      font-size: 1rem;
+      margin: 0 0 0.25rem 0;
+      font-weight: 400;
+    }
+    .category-card__link {
+      text-decoration: none;
+      font-size: 0.9rem;
+      color: var(--color-text);
+    }
+    .carousel-dots {
+        display: none;
+    }
+  
+    /* Responsive Carousel for Mobile */
+    @media (max-width: 768px) {
+      .configurator-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .category-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 16px;
+        padding-bottom: 1.5rem; /* for scrollbar and dots */
+        scrollbar-width: none; /* Firefox */
+      }
+      .category-grid::-webkit-scrollbar {
+        display: none; /* Chrome, Safari */
+      }
+      .category-card {
+        flex: 0 0 65%; /* Each item takes up 65% of the viewport width */
+        scroll-snap-align: start;
+      }
+      .carousel-dots {
+        display: flex;
+        justify-content: center;
+        margin-top: 1rem;
+      }
+      .dot {
+        height: 6px;
+        width: 6px;
+        margin: 0 4px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+      }
+      .dot:first-child {
+         background-color: #333;
+      }
+    }
+  </style>
+  
+  {% schema %}
+  {
+    "name": "Configurator Landing",
+    "tag": "section",
+    "class": "shopify-section--configurator-landing",
+    "presets": [
+      {
+        "name": "Configurator Landing"
+      }
+    ]
+  }
+  {% endschema %}
+  
