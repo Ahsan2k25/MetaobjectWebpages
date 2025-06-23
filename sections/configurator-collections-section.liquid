@@ -19,12 +19,9 @@
       {% for parent in shop.metaobjects.configurator.values %}
         <section id="{{ parent.configurator_name | handleize }}" class="configurator-parent-section">
           <h3 class="configurator-parent-title">{{ parent.configurator_name }}</h3>
+          {% assign child_categories = parent.configurator_collection.value %}
           <div class="category-grid-wrapper">
-            <div class="category-grid">
-              {% comment %}
-                Use .value to get the list of actual metaobject objects.
-              {% endcomment %}
-              {%- assign child_categories = parent.configurator_collection.value -%}
+            <div class="category-grid" data-carousel>
               {% for child in child_categories %}
                 {% if child %}
                   <div class="category-card">
@@ -56,13 +53,16 @@
                   <p>No child categories are linked for this section.</p>
               {% endfor %}
             </div>
-            {% if child_categories.size > 2 %}
+            {% if child_categories.size > 1 %}
+              <div class="carousel-progress-bar">
+                <div class="carousel-progress" style="width: 0%"></div>
+              </div>
               <div class="carousel-dots">
                 {% for child in child_categories %}
-                   <span class="dot"></span>
+                  <span class="dot{% if forloop.first %} active{% endif %}"></span>
                 {% endfor %}
               </div>
-             {% endif %}
+            {% endif %}
           </div>
         </section>
       {% endfor %}
@@ -160,8 +160,9 @@
       font-size: 0.9rem;
       color: var(--color-text);
     }
-    .carousel-dots {
-        display: none;
+    .carousel-dots,
+    .carousel-progress-bar {
+      display: none;
     }
   
     /* Responsive Carousel for Mobile */
@@ -183,27 +184,97 @@
         display: none; /* Chrome, Safari */
       }
       .category-card {
-        flex: 0 0 65%; /* Each item takes up 65% of the viewport width */
+        flex: 0 0 65%;
         scroll-snap-align: start;
       }
       .carousel-dots {
         display: flex;
         justify-content: center;
-        margin-top: 1rem;
+        margin-top: -1.2rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 2;
       }
       .dot {
-        height: 6px;
-        width: 6px;
+        height: 8px;
+        width: 8px;
         margin: 0 4px;
         background-color: #bbb;
         border-radius: 50%;
         display: inline-block;
+        transition: background 0.2s;
       }
-      .dot:first-child {
-         background-color: #333;
+      .dot.active {
+        background-color: #333;
+      }
+      .carousel-progress-bar {
+        display: block;
+        width: 100%;
+        height: 3px;
+        background: #e0e0e0;
+        border-radius: 2px;
+        margin: 0.5rem 0 0.5rem 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .carousel-progress {
+        height: 100%;
+        background: #333;
+        width: 0%;
+        border-radius: 2px;
+        transition: width 0.2s;
       }
     }
   </style>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // For each carousel on the page
+    document.querySelectorAll('.category-grid').forEach(function(carousel) {
+      const cards = carousel.querySelectorAll('.category-card');
+      const dots = carousel.parentElement.querySelectorAll('.dot');
+      const progressBar = carousel.parentElement.querySelector('.carousel-progress');
+      if (cards.length < 2) return; // No need for carousel controls
+
+      // Helper to get the current index
+      function getCurrentIndex() {
+        const scrollLeft = carousel.scrollLeft;
+        const cardWidth = cards[0].offsetWidth + 16; // 16px gap
+        return Math.round(scrollLeft / cardWidth);
+      }
+
+      // Update dots and progress bar
+      function updateCarouselUI() {
+        const idx = getCurrentIndex();
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === idx);
+        });
+        if (progressBar) {
+          progressBar.style.width = ((idx + 1) / cards.length * 100) + '%';
+        }
+      }
+
+      // Listen for scroll
+      carousel.addEventListener('scroll', function() {
+        updateCarouselUI();
+      });
+
+      // Dots click
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', function() {
+          const cardWidth = cards[0].offsetWidth + 16;
+          carousel.scrollTo({
+            left: i * cardWidth,
+            behavior: 'smooth'
+          });
+        });
+      });
+
+      // Initial UI update
+      updateCarouselUI();
+    });
+  });
+  </script>
   
   {% schema %}
   {
