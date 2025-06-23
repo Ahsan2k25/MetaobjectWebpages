@@ -10,13 +10,14 @@
       <strong>{{ parent.configurator_name }}</strong>
       <ul>
         {% for child in parent.configurator_collection %}
+          {% assign child_obj = child %}
           <li>
-            {{ child.collection_name }}
+            {{ child_obj.collection_name }}
             <!-- Optionally, add image and link -->
-            {% if child.collection_image %}
-              <img src="{{ child.collection_image | image_url }}" alt="{{ child.collection_name }}" style="max-width: 100px;">
+            {% if child_obj.collection_image %}
+              <img src="{{ child_obj.collection_image | image_url }}" alt="{{ child_obj.collection_name }}" style="max-width: 100px;">
             {% endif %}
-            <a href="{{ child.url }}">Configure &rarr;</a>
+            <a href="{{ child_obj.url }}">Configure &rarr;</a>
           </li>
         {% else %}
           <li>No child categories found for this parent.</li>
