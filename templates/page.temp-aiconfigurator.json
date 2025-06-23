@@ -11,13 +11,22 @@
   "sections": {
     "main": {
       "type": "main-page",
+      "disabled": true,
       "settings": {
         "padding_top": 28,
         "padding_bottom": 28
       }
+    },
+    "configurator_collections_section_Qt9ARR": {
+      "type": "configurator-collections-section",
+      "name": "Configurator Section",
+      "settings": {
+        "custom_heading": "Section heading"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "configurator_collections_section_Qt9ARR"
   ]
 }
