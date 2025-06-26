@@ -250,6 +250,11 @@ a.learn-more-arrow svg {
 
 .config-collection-box {
     border-top: 1.5px solid #292521;
+    margin-top: 26px;
+}
+
+.config-collection-box:first-child{
+    margin-top: 0px;
 }
 
 .collection-list-boxes {
@@ -437,7 +442,7 @@ a.learn-more-arrow, .learn-more-arrow{
     .slider-paginations {
         display: flex;
         margin-top: 26px;
-        padding: 0 0 26px;
+        padding: 0;
         align-items: center;
         justify-content: space-between;
     }
