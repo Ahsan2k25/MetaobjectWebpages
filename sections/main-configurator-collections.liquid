@@ -20,12 +20,12 @@
             <div class="collection-list-boxes">
               {% for nested in nested_collections %}
                 <div class="collection-list-item">
-                  <a href="/pages/configurator-collections/{{ nested.collection_name.value | downcase | replace: ' ', '-' }}">
+                  <a href="{% if nested.configure_button_url.value != blank %}{{ nested.configure_button_url.value }}{% else %}/pages/configurator-collections/{{ nested.collection_name.value | downcase | replace: ' ', '-' }}{% endif %}">
                     <img src="{{ nested.collection_image.value | image_url: width: 226 }}" width="226" height="305" alt="collection image" />
                   </a>
                   <div class="collection-content">
                     <h3 class="font-neue-roman">{{ nested.collection_name.value }}</h3>
-                    <a href="/pages/configurator-collections/{{ nested.collection_name.value | downcase | replace: ' ', '-' }}">
+                    <a href="{% if nested.configure_button_url.value != blank %}{{ nested.configure_button_url.value }}{% else %}/pages/configurator-collections/{{ nested.collection_name.value | downcase | replace: ' ', '-' }}{% endif %}">
                       {{ nested.configure_button_text.value }} 
                       {% render 'arrow-icon-configure' %}
                     </a>
