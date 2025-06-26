@@ -51,5 +51,24 @@
   {{ collections.collection_name }}
 {% endif %}
 
+<h1>{{ metaobject.collection_name }}</h1>
+{% assign image = metaobject.collection_image.value %}
+{% if image %}
+  <img src="{{ image | image_url: width: 600 }}" alt="{{ metaobject.collection_name }}">
+{% endif %}
+
+{% assign nested_collections = metaobject.configurator_nested_collection.value %}
+{% if nested_collections.size > 0 %}
+  <h2>Nested Collections</h2>
+  <ul>
+    {% for nested in nested_collections %}
+      <li>
+        <strong>{{ nested.collection_display_name }}</strong>
+        {%- comment -%} You can also access nested.conf_product_cards.value here {%- endcomment -%}
+      </li>
+    {% endfor %}
+  </ul>
+{% endif %}
+
 <h1>Debug</h1>
 <pre>{{ metaobject | json }}</pre>
