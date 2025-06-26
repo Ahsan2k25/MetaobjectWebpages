@@ -1,6 +1,42 @@
+<div class="metaobject-landing">
+  <h1>{{ metaobject.title }}</h1>
+  {% assign categories = metaobject.categories.value %}
+  <div class="categories">
+    {% for category in categories %}
+      <div class="category">
+        <h2>{{ category.title }}</h2>
+        {% assign posts = category.posts.value %}
+        <div class="posts">
+          {% for post in posts %}
+            <div class="post-card">
+              <h3>{{ post.title }}</h3>
+              <p>{{ post.excerpt }}</p>
+              <a href="{{ post.url }}">Read More</a>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
 {% schema %}
-  {
-    "name": "Section name",
-    "settings": []
-  }
+{
+  "name": "Metaobject Listing",
+  "tag": "section",
+  "class": "metaobject-landing-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "custom_heading",
+      "label": "Custom Heading",
+      "default": "Metaobject Landing"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Metaobject Listing"
+    }
+  ]
+}
 {% endschema %}
