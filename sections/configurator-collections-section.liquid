@@ -33,7 +33,7 @@
                     {% endif %}
                     <div class="category-card__info">
                       <h4 class="category-card__title">{{ child.collection_name }}</h4>
-                      <a href="{{ child.url }}" class="category-card__link">
+                      <a href="/collections/{{ child.collection_name | handleize }}" class="category-card__link">
                         Configure &rarr;
                       </a>
                     </div>
@@ -58,6 +58,9 @@
   </div>
   
   <style>
+    html{
+      scroll-behavior: smooth;
+    }
     .configurator-landing-page {
       background-color: #f7f5f3;
       color: #333;
