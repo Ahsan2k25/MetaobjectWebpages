@@ -40,3 +40,13 @@
     ]
   }
   {% endschema %}
+
+{{ metaobject.configurator_name }}
+{% assign collections = metaobject.configurator_collection.value %}
+{% if collections.size %}
+  {% for collection in collections %}
+    {{ collection.collection_name }}
+  {% endfor %}
+{% else %}
+  {{ collections.collection_name }}
+{% endif %}
