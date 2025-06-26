@@ -232,6 +232,7 @@ a.learn-more-arrow svg {
     font-size: 14px;
     line-height: 26px;
     color: #292521;
+    text-transform: uppercase;
 }
 
 .config-collection-box h2 {
