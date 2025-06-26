@@ -20,20 +20,20 @@
                 {% if child %}
                   <div class="category-card">
                     {% if child.collection_image %}
-                      <a href="{{ child.url }}" class="category-card__image-link">
+                      <a href="/pages/configurator-collections/{{ child.collection_name | handleize }}" class="category-card__image-link">
                         <img
                           class="category-card__image"
                           src="{{ child.collection_image | image_url: width: 400 }}"
                           alt="{{ child.collection_image.alt | escape }}"
-                          width="400"
-                          height="{{ 400 | divided_by: child.collection_image.aspect_ratio | round }}"
+                          width="400"child
+                          height="400"
                           loading="lazy"
                         >
                       </a>
                     {% endif %}
                     <div class="category-card__info">
                       <h4 class="category-card__title">{{ child.collection_name }}</h4>
-                      <a href="/collections/{{ child.collection_name | handleize }}" class="category-card__link">
+                      <a href="/pages/configurator-collections/{{ child.collection_name | handleize }}" class="category-card__link">
                         Configure &rarr;
                       </a>
                     </div>
