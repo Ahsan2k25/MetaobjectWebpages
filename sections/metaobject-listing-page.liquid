@@ -1,0 +1,149 @@
+<div class="configurator-landing">
+    <div class="page-width">
+      <h1 class="configurator-main-title">{{ metaobject.collection_name }}</h1>
+      <hr class="configurator-divider" />
+  
+      {% assign nested_collections = metaobject.configurator_nested_collection.value %}
+      {% for nested in nested_collections %}
+        <section class="configurator-parent-section">
+          <h2 class="configurator-parent-title">{{ nested.collection_display_name }}</h2>
+          <div class="category-grid">
+            {% assign product_cards = nested.conf_product_cards.value %}
+            {% for card in product_cards %}
+              <div class="category-card">
+                {% assign card_image = card.product_card_image.value %}
+                {% if card_image %}
+                  <a href="{{ card.configure_button_url }}" class="category-card__image-link">
+                    <img
+                      class="category-card__image"
+                      src="{{ card_image | image_url: width: 400 }}"
+                      alt="{{ card.product_name }}"
+                      width="400"
+                      height="400"
+                      loading="lazy"
+                    >
+                  </a>
+                {% endif %}
+                <div class="category-card__info">
+                  <h4 class="category-card__title">{{ card.product_name }}</h4>
+                  <a href="{{ card.configure_button_url }}" class="category-card__link">
+                    {{ card.configure_button_text | default: 'Configure →' }}
+                  </a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  </div>
+  
+  <style>
+  .configurator-landing {
+    background-color: #f7f5f3;
+    color: #333;
+    padding: 3rem 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  }
+  .page-width {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+  .configurator-main-title {
+    font-size: 2.2rem;
+    font-weight: 400;
+    margin: 0 0 1.5rem 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .configurator-divider {
+    border: none;
+    border-top: 1px solid #d1cdc7;
+    margin-bottom: 2.5rem;
+  }
+  .configurator-parent-section {
+    margin-bottom: 3rem;
+  }
+  .configurator-parent-title {
+    font-size: 1.3rem;
+    font-weight: 400;
+    margin: 0 0 1.5rem 0;
+    letter-spacing: 0.02em;
+  }
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 2rem;
+  }
+  .category-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+    text-align: left;
+    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  .category-card__image-link {
+    display: block;
+    background-color: #e9e6e3;
+    border-radius: 12px 12px 0 0;
+    overflow: hidden;
+  }
+  .category-card__image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    display: block;
+  }
+  .category-card__info {
+    padding: 0 1rem;
+  }
+  .category-card__title {
+    font-size: 1rem;
+    margin: 1rem 0 0.25rem 0;
+    font-weight: 400;
+  }
+  .category-card__link {
+    text-decoration: none;
+    font-size: 0.95rem;
+    color: #333;
+    display: inline-block;
+    margin-top: 0.25rem;
+    letter-spacing: 0.01em;
+  }
+  @media (max-width: 768px) {
+    .category-grid {
+      display: flex;
+      overflow-x: auto;
+      gap: 16px;
+      padding-bottom: 1.5rem;
+      scrollbar-width: none;
+    }
+    .category-grid::-webkit-scrollbar {
+      display: none;
+    }
+    .category-card {
+      flex: 0 0 65%;
+      min-width: 220px;
+      max-width: 320px;
+    }
+  }
+  </style>
+  
+  {% schema %}
+  {
+    "name": "Metaobject Listing",
+    "tag": "section",
+    "class": "metaobject-configurator-section",
+    "settings": [],
+    "presets": [
+      {
+        "name": "Metaobject Listing"
+      }
+    ]
+  }
+  {% endschema %}

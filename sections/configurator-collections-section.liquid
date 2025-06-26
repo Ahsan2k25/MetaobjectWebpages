@@ -1,0 +1,268 @@
+<div class="configurator-landing-page">
+    <div class="page-width">
+      <div class="configurator-header">
+        <h2 class="configurator-main-title">Configurators</h2>
+        <nav class="configurator-nav">
+          {% for parent in shop.metaobjects.configurator.values %}
+            <a href="#{{ parent.configurator_name | handleize }}">{{ parent.configurator_name }}</a>
+          {% endfor %}
+        </nav>
+      </div>
+  
+      {% for parent in shop.metaobjects.configurator.values %}
+        <section id="{{ parent.configurator_name | handleize }}" class="configurator-parent-section">
+          <h3 class="configurator-parent-title">{{ parent.configurator_name }}</h3>
+          {% assign child_categories = parent.configurator_collection.value %}
+          {% assign child_categories_count = child_categories | size %}
+          <div class="category-grid-wrapper">
+            <div class="category-grid" data-carousel>
+              {% for child in child_categories %}
+                {% if child %}
+                  <div class="category-card">
+                    {% if child.collection_image %}
+                      <a href="/pages/configurator-collections/{{ child.collection_name | handleize }}" class="category-card__image-link">
+                        <img
+                          class="category-card__image"
+                          src="{{ child.collection_image | image_url: width: 400 }}"
+                          alt="{{ child.collection_image.alt | escape }}"
+                          width="400"child
+                          height="400"
+                          loading="lazy"
+                        >
+                      </a>
+                    {% endif %}
+                    <div class="category-card__info">
+                      <h4 class="category-card__title">{{ child.collection_name }}</h4>
+                      <a href="/pages/configurator-collections/{{ child.collection_name | handleize }}" class="category-card__link">
+                        Configure &rarr;
+                      </a>
+                    </div>
+                  </div>
+                {% endif %}
+              {% endfor %}
+            </div>
+            {% if child_categories_count > 1 %}
+              <div class="carousel-indicators">
+                <span class="carousel-progress-text">1/{{ child_categories_count }}</span>
+                <div class="carousel-dots">
+                  {% for child in child_categories %}
+                    <span class="dot{% if forloop.first %} active{% endif %}"></span>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </section>
+      {% endfor %}
+    </div>
+  </div>
+  
+  <style>
+    html{
+      scroll-behavior: smooth;
+    }
+    .configurator-landing-page {
+      background-color: #f7f5f3;
+      color: #333;
+      padding: 3rem 0;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    }
+    .page-width {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    .configurator-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px solid #d1cdc7;
+      padding-bottom: 1rem;
+      margin-bottom: 2rem;
+    }
+    .configurator-main-title {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 0;
+      text-transform: uppercase;
+    }
+    .configurator-nav {
+      display: flex;
+      gap: 2rem;
+    }
+    .configurator-nav a {
+      text-decoration: none;
+      color: #333;
+      font-weight: 400;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+    .configurator-parent-section {
+      margin-bottom: 3rem;
+      border-bottom: 1px solid #d1cdc7;
+      padding-bottom: 2rem;
+    }
+    .configurator-parent-section:last-of-type {
+      border-bottom: none;
+      margin-bottom: 0;
+    }
+    .configurator-parent-title {
+      font-size: 1.5rem;
+      font-weight: 400;
+      margin: 0 0 1.5rem 0;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+    .category-card {
+      text-align: left;
+    }
+    .category-card__image-link {
+      display: block;
+      margin-bottom: 1rem;
+      background-color: #e9e6e3;
+      overflow: hidden;
+    }
+    .category-card__image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1.1;
+      object-fit: cover;
+      display: block;
+    }
+    .category-card__info {
+      padding: 0 0.5rem;
+    }
+    .category-card__title {
+      font-size: 1rem;
+      margin: 0 0 0.25rem 0;
+      font-weight: 400;
+    }
+    .category-card__link {
+      text-decoration: none;
+      font-size: 0.9rem;
+      color: #333;
+    }
+    .carousel-indicators {
+      display: none;
+    }
+  
+    /* Responsive Carousel for Mobile */
+    @media (max-width: 768px) {
+      .configurator-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .category-grid {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 16px;
+        padding-bottom: 1.5rem;
+        scrollbar-width: none;
+      }
+      .category-grid::-webkit-scrollbar {
+        display: none;
+      }
+      .category-card {
+        flex: 0 0 65%;
+        scroll-snap-align: start;
+      }
+      .carousel-indicators {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-top: -1.2rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+        z-index: 2;
+        font-size: 1rem;
+        color: #333;
+      }
+      .carousel-progress-text {
+        font-size: 1rem;
+        min-width: 2.5em;
+        text-align: left;
+        color: #333;
+        font-family: inherit;
+      }
+      .carousel-dots {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 6px;
+      }
+      .dot {
+        height: 8px;
+        width: 8px;
+        background-color: #bbb;
+        border-radius: 50%;
+        display: inline-block;
+        transition: background 0.2s;
+      }
+      .dot.active {
+        background-color: #333;
+      }
+    }
+  </style>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    document.querySelectorAll('.category-grid').forEach(function(carousel) {
+      const cards = carousel.querySelectorAll('.category-card');
+      const dots = carousel.parentElement.querySelectorAll('.dot');
+      const progressText = carousel.parentElement.querySelector('.carousel-progress-text');
+      if (cards.length < 2) return;
+  
+      function getCurrentIndex() {
+        const scrollLeft = carousel.scrollLeft;
+        const cardWidth = cards[0].offsetWidth + 16;
+        return Math.round(scrollLeft / cardWidth);
+      }
+  
+      function updateCarouselUI() {
+        const idx = getCurrentIndex();
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('active', i === idx);
+        });
+        if (progressText) {
+          progressText.textContent = (idx + 1) + '/' + cards.length;
+        }
+      }
+  
+      carousel.addEventListener('scroll', function() {
+        updateCarouselUI();
+      });
+  
+      dots.forEach((dot, i) => {
+        dot.addEventListener('click', function() {
+          const cardWidth = cards[0].offsetWidth + 16;
+          carousel.scrollTo({
+            left: i * cardWidth,
+            behavior: 'smooth'
+          });
+        });
+      });
+  
+      // Initial UI update
+      updateCarouselUI();
+    });
+  });
+  </script>
+  
+  {% schema %}
+  {
+    "name": "Configurator Landing",
+    "tag": "section",
+    "class": "shopify-section--configurator-landing",
+    "presets": [
+      {
+        "name": "Configurator Landing"
+      }
+    ]
+  }
+  {% endschema %}
