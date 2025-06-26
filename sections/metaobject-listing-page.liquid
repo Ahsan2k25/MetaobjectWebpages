@@ -72,3 +72,20 @@
 
 <h1>Debug</h1>
 <pre>{{ metaobject | json }}</pre>
+
+{% for nested in nested_collections %}
+  <h3>{{ nested.collection_display_name }}</h3>
+  {% assign product_cards = nested.conf_product_cards.value %}
+  <div class="product-cards">
+    {% for card in product_cards %}
+      <div class="product-card">
+        {% assign card_image = card.product_card_image.value %}
+        {% if card_image %}
+          <img src="{{ card_image | image_url: width: 300 }}" alt="{{ card.product_name }}">
+        {% endif %}
+        <h4>{{ card.product_name }}</h4>
+        <a href="{{ card.configure_button_url }}">{{ card.configure_button_text }}</a>
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}
