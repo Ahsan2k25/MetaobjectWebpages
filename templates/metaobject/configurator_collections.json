@@ -14,9 +14,17 @@
       "disabled": true,
       "name": "Configurator Listing",
       "settings": {}
+    },
+    "metaobject_listing_page_zXxRGg": {
+      "type": "metaobject-listing-page",
+      "name": "Metaobject Listing",
+      "settings": {
+        "custom_heading": "Metaobject Landing"
+      }
     }
   },
   "order": [
-    "configurator_listing_3jPazE"
+    "configurator_listing_3jPazE",
+    "metaobject_listing_page_zXxRGg"
   ]
 }
