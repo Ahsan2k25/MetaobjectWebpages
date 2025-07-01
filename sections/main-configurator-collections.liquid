@@ -2,7 +2,7 @@
 <link href="{{ 'page.configurator-landing.css' | asset_url }}" rel="stylesheet">
 
 {% assign configurator = page.metafields.custom.configurator.value %}
-
+{{ configurator | json }}
 <div class="configurator-landing">
   <div class="container">
     <section class="config-collections">
@@ -17,7 +17,7 @@
       <div class="config-bottom-area">
         {% for conf in configurator %}
           {% assign nested_collections = conf.configurator_collection.value %}
-          {{ nested_collections | json }}
+          
           <div class="config-collection-box" id="{{ conf.configurator_name.value }}">
             <h2 class="font-neue-roman">{{ conf.configurator_name.value }}</h2>
             <div class="collection-list-boxes">
