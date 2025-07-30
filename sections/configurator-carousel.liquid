@@ -13,8 +13,7 @@
               {% assign customer_company = customer.current_company.metafields.metadata.tier %}
               {% assign customer_ffa = customer.current_company.metafields.metadata.ffaLimit %}
 
-              <p class="font-neue-roman">Congratulations on your <strong> Ruby Status</strong>. <br>Free Freight on order over $3000</p>
-              {% comment %} <p class="customer-status font-neue-roman">You are $25,000 from your Diamond Status</p> {% endcomment %}
+              <p class="font-neue-roman">Congratulations on your <strong> {{ customer_company }} Status</strong>. <br>Free Freight on order over ${{ customer_ffa }}</p>
 
               <h2 class="font-neue-roman quick-links-heading">{{ section.settings.quick_links_heading  }}</h2>
               {% assign quickLinksMenu = linklists['configurator-quick-links'] %}
